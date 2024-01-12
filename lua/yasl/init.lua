@@ -42,13 +42,13 @@ M.setup = function(opts)
 	local status_string = ""
 	if opts.sections ~= nil then
 		status_string = string.format("%s%s %s %s %s %s%s",
-			get_statusgroup(opts.sections.a, "a"),
-			get_statusgroup(opts.sections.b, "b"),
+			get_statusgroup(vim.F.if_nil(opts.sections.a, {}), "a"),
+			get_statusgroup(vim.F.if_nil(opts.sections.b, {}), "b"),
 			"%=",
-			get_statusgroup(opts.sections.c, "c"),
+			get_statusgroup(vim.F.if_nil(opts.sections.c, {}), "c"),
 			"%=",
-			get_statusgroup(opts.sections.d, "d"),
-			get_statusgroup(opts.sections.e, "e"))
+			get_statusgroup(vim.F.if_nil(opts.sections.d, {}), "d"),
+			get_statusgroup(vim.F.if_nil(opts.sections.e, {}), "e"))
 	else
 		status_string = string.format("%s%s %s %s %s %s%s",
 			get_statusgroup(default_groups["a"], "a"),
