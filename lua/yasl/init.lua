@@ -40,7 +40,7 @@ M.setup = function(opts)
 	}
 
 	local status_string = ""
-	if opts.sections ~= nil then
+	if opts ~= nil and opts.sections ~= nil then
 		status_string = string.format("%s%s %s %s %s %s%s",
 			get_statusgroup(vim.F.if_nil(opts.sections.a, {}), "a"),
 			get_statusgroup(vim.F.if_nil(opts.sections.b, {}), "b"),
