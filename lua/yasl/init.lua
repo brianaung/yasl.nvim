@@ -1,23 +1,25 @@
-Diagnostics = require("yasl.lib.diagnostics").diagnostics
-Branch = require("yasl.lib.branch").branch
+_G.diagnostics = require("yasl.lib.diagnostics").diagnostics
+_G.branch = require("yasl.lib.branch").branch
 
 local M = {}
 
-local get_statusgroup = function(section, hl_name)
+local get_status_grp = function(section, hl_name)
 	if section.components == nil or #section.components == 0 then return "" end
-	-- define components
+
 	local components = {
 		["mode"] = "%{mode()}",
 		["filename"] = "%<%t%h%m%r%w",
-		["branch"] = "%{luaeval('Branch()')}",
-		["diagnostics"] = "%{luaeval('Diagnostics()')}",
+		["branch"] = "%{luaeval('branch()')}",
+		["diagnostics"] = "%{luaeval('diagnostics()')}",
 		["filetype"] = "%y",
 		["progress"] = "%P",
 		["location"] = "%-8.(%l, %c%V%)",
 	}
+
 	-- set highlight (or its fallback)
 	vim.api.nvim_set_hl(0, hl_name,
 		vim.F.if_nil(section.highlight, vim.api.nvim_get_hl(0, { name = "StatusLine" })))
+
 	-- group components for current section
 	local curr = string.format("%s%s%s", "%#", hl_name, "#")
 	for i = 1, #section.components do
@@ -28,38 +30,31 @@ local get_statusgroup = function(section, hl_name)
 	return string.format("%s %s", curr, "%*")
 end
 
-M.setup = function(opts)
-	vim.api.nvim_set_option("laststatus", 3)
-
-	local default_groups = {
-		["a"] = { components = { "mode" } },
-		["b"] = { components = { "diagnostics" } },
-		["c"] = { components = { "filename", "branch" } },
-		["d"] = { components = { "filetype" } },
-		["e"] = { components = { "location", "progress" } },
+local get_status_str = function(opts)
+	local default_sections = {
+		a = { components = { "mode" } },
+		b = { components = { "diagnostics" } },
+		c = { components = { "filename", "branch" } },
+		d = { components = { "filetype" } },
+		e = { components = { "location", "progress" } },
 	}
 
-	local status_string = ""
-	if opts ~= nil and opts.sections ~= nil then
-		status_string = string.format("%s%s %s %s %s %s%s",
-			get_statusgroup(vim.F.if_nil(opts.sections.a, {}), "a"),
-			get_statusgroup(vim.F.if_nil(opts.sections.b, {}), "b"),
-			"%=",
-			get_statusgroup(vim.F.if_nil(opts.sections.c, {}), "c"),
-			"%=",
-			get_statusgroup(vim.F.if_nil(opts.sections.d, {}), "d"),
-			get_statusgroup(vim.F.if_nil(opts.sections.e, {}), "e"))
-	else
-		status_string = string.format("%s%s %s %s %s %s%s",
-			get_statusgroup(default_groups["a"], "a"),
-			get_statusgroup(default_groups["b"], "b"),
-			"%=",
-			get_statusgroup(default_groups["c"], "c"),
-			"%=",
-			get_statusgroup(default_groups["d"], "d"),
-			get_statusgroup(default_groups["e"], "e"))
-	end
-	vim.api.nvim_set_option("statusline", status_string)
+	local sections = (opts and opts.sections) and opts.sections or default_sections
+
+	return table.concat({
+		get_status_grp(vim.F.if_nil(sections.a, {}), "a"),
+		get_status_grp(vim.F.if_nil(sections.b, {}), "b"),
+		"%=",
+		get_status_grp(vim.F.if_nil(sections.c, {}), "c"),
+		"%=",
+		get_status_grp(vim.F.if_nil(sections.d, {}), "d"),
+		get_status_grp(vim.F.if_nil(sections.e, {}), "e")
+	})
+end
+
+M.setup = function(opts)
+	vim.api.nvim_set_option("laststatus", 3)
+	vim.api.nvim_set_option("statusline", get_status_str(opts))
 end
 
 return M
