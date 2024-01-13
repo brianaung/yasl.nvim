@@ -1,5 +1,5 @@
-_G.diagnostics = require("yasl.component.diagnostics").diagnostics
-_G.branch = require("yasl.component.git").branch
+_G.diagnostics = require("yasl.component").diagnostics
+_G.branch = require("yasl.component").branch
 
 local M = {}
 
