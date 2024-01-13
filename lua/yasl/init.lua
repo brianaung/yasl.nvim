@@ -1,11 +1,12 @@
+-- todo: is there a better way than polluting global namespace?
 _G.diagnostics = require("yasl.component").diagnostics
-local branch = require("yasl.component").branch
+_G.branch = require("yasl.component").branch
 
 local components = {
 	["mode"] = "%{mode()}",
 	["filename"] = "%<%t%h%m%r%w",
-	["branch"] = branch(),                          -- i dont need dynamic updates
-	["diagnostics"] = "%{luaeval('diagnostics()')}", -- but here i do
+	["branch"] = "%{luaeval('branch()')}",
+	["diagnostics"] = "%{luaeval('diagnostics()')}",
 	["filetype"] = "%y",
 	["progress"] = "%P",
 	["location"] = "%-8.(%l, %c%V%)",
