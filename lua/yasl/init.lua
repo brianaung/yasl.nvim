@@ -1,10 +1,25 @@
-_G.diagnostics = require("yasl.lib.diagnostics").diagnostics
-_G.branch = require("yasl.lib.branch").branch
+_G.diagnostics = require("yasl.component.diagnostics").diagnostics
+_G.branch = require("yasl.component.git").branch
 
 local M = {}
 
+-- some component can have empty content, in which case we don't want to show the bg
+local is_component_empty = function(component)
+	if component == "filetype" and #vim.fn.expand("%") == 0 then
+		return true
+	end
+	if component == "diagnostics" and diagnostics() == "" then
+		return true
+	end
+	return false
+end
+
 local get_status_grp = function(section, hl_name)
-	if section.components == nil or #section.components == 0 then return "" end
+	if section.components == nil or
+			#section.components == 0 or
+			(#section.components == 1 and is_component_empty(section.components[1])) then
+		return ""
+	end
 
 	local components = {
 		["mode"] = "%{mode()}",
@@ -19,18 +34,6 @@ local get_status_grp = function(section, hl_name)
 	-- set highlight (or its fallback)
 	vim.api.nvim_set_hl(0, hl_name,
 		vim.F.if_nil(section.highlight, vim.api.nvim_get_hl(0, { name = "StatusLine" })))
-
-	-- group components for current section
-	-- very hacky way to not show bg with content is empty
-	if #section.components == 1 and
-			(section.components[1] == "diagnostics" or section.components[1] == "filetype") and
-			#vim.fn.expand("%") == 0 then
-		return ""
-	end
-	if #section.components == 1 and
-			section.components[1] == "diagnostics" and diagnostics() == "" then
-		return ""
-	end
 
 	local curr = string.format("%s%s%s", "%#", hl_name, "#")
 	for i = 1, #section.components do
@@ -61,17 +64,20 @@ local get_status_str = function(opts)
 	})
 end
 
+local default_refresh_events = {
+	"LspAttach", "WinEnter", "BufEnter", "SessionLoadPost",
+	"FileChangedShellPost", "VimResized", "Filetype", "CursorMoved",
+	"CursorMovedI", "ModeChanged"
+}
+
 M.setup = function(opts)
 	vim.api.nvim_set_option("laststatus", 3)
 	vim.api.nvim_set_option("statusline", get_status_str(opts))
-	vim.api.nvim_create_autocmd(
-		{ "WinEnter", "BufEnter", "SessionLoadPost", "FileChangedShellPost", "VimResized", "Filetype", "CursorMoved",
-			"CursorMovedI", "ModeChanged"
-		}, {
-			callback = function()
-				vim.api.nvim_set_option("statusline", get_status_str(opts))
-			end
-		})
+	vim.api.nvim_create_autocmd(default_refresh_events, {
+		callback = function()
+			vim.api.nvim_set_option("statusline", get_status_str(opts))
+		end
+	})
 end
 
 return M
