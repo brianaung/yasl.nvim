@@ -22,4 +22,29 @@ function M.diagnostics()
 	return ret
 end
 
+function M.gitdiff()
+	-- no opened buffer
+	if #vim.fn.expand("%") == 0 then return "" end
+
+	local raw_stats = vim.fn.system("git diff --numstat " .. vim.fn.expand("%"))
+
+	-- no diff stats
+	if #raw_stats == 0 then return "" end
+
+	-- helper to parse tabs separated values
+	local function parse_tsv(s)
+		local result = {}
+		s = s .. '\t'
+		for w in s:gmatch("(.-)\t") do
+			table.insert(result, w)
+		end
+		return result
+	end
+
+	local diff_add = parse_tsv(raw_stats)[1]
+	local diff_del = parse_tsv(raw_stats)[2]
+
+	return string.format("[+%s,-%s]", diff_add, diff_del)
+end
+
 return M

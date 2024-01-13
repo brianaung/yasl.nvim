@@ -1,11 +1,13 @@
 -- todo: is there a better way than polluting global namespace?
 _G.diagnostics = require("yasl.component").diagnostics
 _G.branch = require("yasl.component").branch
+_G.gitdiff = require("yasl.component").gitdiff
 
 local components = {
 	["mode"] = "%{mode()}",
 	["filename"] = "%<%t%h%m%r%w",
 	["branch"] = "%{luaeval('branch()')}",
+	["gitdiff"] = "%{luaeval('gitdiff()')}",
 	["diagnostics"] = "%{luaeval('diagnostics()')}",
 	["filetype"] = "%y",
 	["progress"] = "%P",
@@ -15,7 +17,7 @@ local components = {
 local default_sections = {
 	a = { components = { "mode" } },
 	b = { components = { "diagnostics" } },
-	c = { components = { "filename", "branch" } },
+	c = { components = { "filename", "branch", "gitdiff" } },
 	d = { components = { "filetype" } },
 	e = { components = { "location", "progress" } },
 }

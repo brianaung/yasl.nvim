@@ -31,7 +31,7 @@ require("yasl").setup({
     sections = {
         a = { components = { "mode" } },
         b = { components = { "diagnostics" } },
-        c = { components = { "filename", "branch" } },
+        c = { components = { "filename", "branch", "gitdiff" } },
         d = { components = { "filetype" } },
         e = { components = { "location", "progress" } },
     }
