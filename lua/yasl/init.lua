@@ -1,7 +1,6 @@
-_G.diagnostics = require("yasl.component").diagnostics
-_G.branch = require("yasl.component").branch
-
-local M = {}
+-- local diagnostics = require("yasl.component").diagnostics
+local diagnostics = require("yasl.component").diagnostics
+local branch = require("yasl.component").branch
 
 -- some component can have empty content, in which case we don't want to show the bg
 local is_component_empty = function(component)
@@ -14,6 +13,8 @@ local is_component_empty = function(component)
 	return false
 end
 
+local fallback_color = vim.api.nvim_get_hl(0, { name = "StatusLine" })
+
 local get_status_grp = function(section, hl_name)
 	if section.components == nil or
 			#section.components == 0 or
@@ -24,8 +25,9 @@ local get_status_grp = function(section, hl_name)
 	local components = {
 		["mode"] = "%{mode()}",
 		["filename"] = "%<%t%h%m%r%w",
-		["branch"] = "%{luaeval('branch()')}",
-		["diagnostics"] = "%{luaeval('diagnostics()')}",
+		["branch"] = branch(),
+		-- ["diagnostics"] = "%{luaeval('diagnostics()')}",
+		["diagnostics"] = diagnostics(),
 		["filetype"] = "%y",
 		["progress"] = "%P",
 		["location"] = "%-8.(%l, %c%V%)",
@@ -33,7 +35,7 @@ local get_status_grp = function(section, hl_name)
 
 	-- set highlight (or its fallback)
 	vim.api.nvim_set_hl(0, hl_name,
-		vim.F.if_nil(section.highlight, vim.api.nvim_get_hl(0, { name = "StatusLine" })))
+		vim.F.if_nil(section.highlight, fallback_color))
 
 	local curr = string.format("%s%s%s", "%#", hl_name, "#")
 	for i = 1, #section.components do
@@ -69,6 +71,8 @@ local default_refresh_events = {
 	"FileChangedShellPost", "VimResized", "Filetype", "CursorMoved",
 	"CursorMovedI", "ModeChanged"
 }
+
+local M = {}
 
 M.setup = function(opts)
 	vim.api.nvim_set_option("laststatus", 3)
