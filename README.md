@@ -1,6 +1,6 @@
 # yasl.nvim
 
-Yet another (minimal and lightweight) statusline plugin for neovim.
+Yet another ***minimal and lightweight*** statusline plugin for neovim.
 
 ## Installation
 Using Lazy:
@@ -14,9 +14,17 @@ Using Lazy:
 ```
 
 ## Configuration
+### Sections layout
+```
++------------------------------------+
+| a | b |        | c |       | d | e |
++------------------------------------+
+```
+
+### Default configuration
 ```lua
 require("yasl").setup({
-    -- default options
+    -- default options (with all available modules)
     sections = {
         a = { components = { "mode" } },
         b = { components = { "diagnostics" } },
@@ -25,6 +33,21 @@ require("yasl").setup({
         e = { components = { "location", "progress" } },
     }
 })
+```
+
+### Custom highlights
+```lua
+require("yasl").setup({
+    -- provide custom highlights
+    sections = {
+        -- see :h nvim_set_hl() to see the {val} format
+        a = { 
+            components = { "mode" }, 
+            highlight = { fg = "...", bg = "...", ... } 
+        },
+        ...
+    }
+}
 ```
 
 ***WIP***
