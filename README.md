@@ -2,7 +2,7 @@
 
 Yet another ***minimal and lightweight*** statusline plugin for neovim.
 
-### Examples
+## Examples
 ![screenshot of statusline with custom colors](./examples/screenshot-with-colors.png)
 
 ## Installation
