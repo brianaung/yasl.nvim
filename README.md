@@ -2,6 +2,9 @@
 
 Yet another ***minimal and lightweight*** statusline plugin for neovim.
 
+### Examples
+![screenshot of statusline with custom colors](./examples/screenshot-with-colors.png)
+
 ## Installation
 Using Lazy:
 ```lua
@@ -43,11 +46,9 @@ require("yasl").setup({
         -- see :h nvim_set_hl() to see the {val} format
         a = { 
             components = { "mode" }, 
-            highlight = { fg = "...", bg = "...", ... } 
+            highlight = { fg = "#202020", bg = "#7daea3" },
         },
         ...
     }
 }
 ```
-
-***WIP***
