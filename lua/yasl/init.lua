@@ -21,11 +21,16 @@ local get_status_grp = function(section, hl_name)
 		vim.F.if_nil(section.highlight, vim.api.nvim_get_hl(0, { name = "StatusLine" })))
 
 	-- group components for current section
+	-- very hacky way to not show bg with content is empty
+	if #section.components == 1 and
+			(section.components[1] == "diagnostics" or section.components[1] == "filetype") and
+			#vim.fn.expand("%") == 0 then
+		return ""
+	end
+
 	local curr = string.format("%s%s%s", "%#", hl_name, "#")
 	for i = 1, #section.components do
-		if #vim.fn.expand("%") == 0 then
-			curr = string.format("%s %s", curr, components[section.components[i]])
-		end
+		curr = string.format("%s %s", curr, components[section.components[i]])
 	end
 	return string.format("%s %s", curr, "%*")
 end
@@ -55,6 +60,14 @@ end
 M.setup = function(opts)
 	vim.api.nvim_set_option("laststatus", 3)
 	vim.api.nvim_set_option("statusline", get_status_str(opts))
+	vim.api.nvim_create_autocmd(
+		{ "WinEnter", "BufEnter", "SessionLoadPost", "FileChangedShellPost", "VimResized", "Filetype", "CursorMoved",
+			"CursorMovedI", "ModeChanged"
+		}, {
+			callback = function()
+				vim.api.nvim_set_option("statusline", get_status_str(opts))
+			end
+		})
 end
 
 return M
