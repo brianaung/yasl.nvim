@@ -28,7 +28,7 @@ local fallback_color = vim.api.nvim_get_hl(0, { name = "StatusLine" })
 
 
 -- some component can have empty content, in which case we don't want to show the bg
-local is_component_empty = function(component)
+local function is_component_empty(component)
 	if component == "filetype" and #vim.fn.expand("%") == 0 then
 		return true
 	end
@@ -38,7 +38,7 @@ local is_component_empty = function(component)
 	return false
 end
 
-local get_status_grp = function(section, grp_name)
+local function get_status_grp(section, grp_name)
 	if section.components == nil or
 			#section.components == 0 or
 			(#section.components == 1 and is_component_empty(section.components[1])) then
@@ -55,7 +55,7 @@ local get_status_grp = function(section, grp_name)
 	return string.format("%s %s", curr, "%*")
 end
 
-local get_full_status_str = function(sections)
+local function get_full_status_str(sections)
 	return table.concat({
 		get_status_grp(vim.F.if_nil(sections.a, {}), "a"),
 		get_status_grp(vim.F.if_nil(sections.b, {}), "b"),
@@ -69,7 +69,7 @@ end
 
 local M = {}
 
-M.setup = function(opts)
+function M.setup(opts)
 	-- opts.global
 	local global = true
 	if (opts and opts.global ~= nil) then
