@@ -1,4 +1,3 @@
--- local diagnostics = require("yasl.component").diagnostics
 local diagnostics = require("yasl.component").diagnostics
 local branch = require("yasl.component").branch
 
@@ -66,11 +65,7 @@ local get_status_str = function(opts)
 	})
 end
 
-local default_refresh_events = {
-	"LspAttach", "WinEnter", "BufEnter", "SessionLoadPost",
-	"FileChangedShellPost", "VimResized", "Filetype", "CursorMoved",
-	"CursorMovedI", "ModeChanged"
-}
+local default_refresh_events = { "LspAttach", "WinEnter", "BufEnter" }
 
 local M = {}
 
