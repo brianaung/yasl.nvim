@@ -23,28 +23,52 @@ function M.diagnostics()
 end
 
 function M.gitdiff()
+	-- Adapted from https://github.com/nvim-lualine/lualine.nvim
+	local function process_diff(data)
+		local added, removed, modified = 0, 0, 0
+		for _, line in ipairs(data) do
+			if string.find(line, [[^@@ ]]) then
+				local tokens = vim.fn.matchlist(line, [[^@@ -\v(\d+),?(\d*) \+(\d+),?(\d*)]])
+				local line_stats = {
+					mod_count = tokens[3] == nil and 0 or tokens[3] == '' and 1 or tonumber(tokens[3]),
+					new_count = tokens[5] == nil and 0 or tokens[5] == '' and 1 or tonumber(tokens[5]),
+				}
+
+				if line_stats.mod_count == 0 and line_stats.new_count > 0 then
+					added = added + line_stats.new_count
+				elseif line_stats.mod_count > 0 and line_stats.new_count == 0 then
+					removed = removed + line_stats.mod_count
+				else
+					local min = math.min(line_stats.mod_count, line_stats.new_count)
+					modified = modified + min
+					added = added + line_stats.new_count - min
+					removed = removed + line_stats.mod_count - min
+				end
+			end
+		end
+		return { added = added, modified = modified, removed = removed }
+	end
+
+	local function split_lines(str)
+		local lines = {}
+		for s in str:gmatch("[^\r\n]+") do
+			table.insert(lines, s)
+		end
+		return lines
+	end
+
 	-- no opened buffer
 	if #vim.fn.expand("%") == 0 then return "" end
 
-	local raw_stats = vim.fn.system("git diff --numstat " .. vim.fn.expand("%"))
+	local raw_diff = vim.fn.system(string.format("git --no-pager diff --no-color --no-ext-diff -U0 -- %s",
+		vim.fn.expand("%")))
 
 	-- no diff stats
-	if #raw_stats == 0 then return "" end
+	if #raw_diff == 0 then return "" end
 
-	-- helper to parse tabs separated values
-	local function parse_tsv(s)
-		local result = {}
-		s = s .. '\t'
-		for w in s:gmatch("(.-)\t") do
-			table.insert(result, w)
-		end
-		return result
-	end
+	local diff_stats = process_diff(split_lines(raw_diff))
 
-	local diff_add = parse_tsv(raw_stats)[1]
-	local diff_del = parse_tsv(raw_stats)[2]
-
-	return string.format("[+%s,-%s]", diff_add, diff_del)
+	return string.format("[+%s,-%s,~%s]", diff_stats.added, diff_stats.removed, diff_stats.modified)
 end
 
 return M
