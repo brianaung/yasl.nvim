@@ -27,6 +27,10 @@ local get_status_grp = function(section, hl_name)
 			#vim.fn.expand("%") == 0 then
 		return ""
 	end
+	if #section.components == 1 and
+			section.components[1] == "diagnostics" and diagnostics() == "" then
+		return ""
+	end
 
 	local curr = string.format("%s%s%s", "%#", hl_name, "#")
 	for i = 1, #section.components do
