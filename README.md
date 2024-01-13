@@ -27,8 +27,10 @@ Using Lazy:
 ### Default configuration
 ```lua
 require("yasl").setup({
-    -- default options (with all available modules)
+    -- Default options
+    global = true, -- show single statusline for all files
     sections = {
+        -- all available modules
         a = { components = { "mode" } },
         b = { components = { "diagnostics" } },
         c = { components = { "filename", "branch", "gitdiff" } },
