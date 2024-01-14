@@ -55,8 +55,8 @@ local function get_status_grp(section, grp_name)
 	return string.format("%s %s", curr, "%*")
 end
 
-local function get_full_status_str(sections)
-	return table.concat({
+local function set_statusline(sections)
+	vim.api.nvim_set_option("statusline", table.concat({
 		get_status_grp(vim.F.if_nil(sections.a, {}), "a"),
 		get_status_grp(vim.F.if_nil(sections.b, {}), "b"),
 		"%=",
@@ -64,7 +64,7 @@ local function get_full_status_str(sections)
 		"%=",
 		get_status_grp(vim.F.if_nil(sections.d, {}), "d"),
 		get_status_grp(vim.F.if_nil(sections.e, {}), "e")
-	})
+	}))
 end
 
 local M = {}
@@ -75,7 +75,7 @@ function M.setup(opts)
 	if (opts and opts.global ~= nil) then
 		global = opts.global
 	end
-	if global == true then
+	if global then
 		vim.api.nvim_set_option("laststatus", 3)
 	else
 		vim.api.nvim_set_option("laststatus", 2)
@@ -83,10 +83,10 @@ function M.setup(opts)
 
 	-- opts.sections
 	local sections = (opts and opts.sections) and opts.sections or default_sections
-	vim.api.nvim_set_option("statusline", get_full_status_str(sections))
+	set_statusline(sections)
 	vim.api.nvim_create_autocmd(default_refresh_events, {
 		callback = function()
-			vim.api.nvim_set_option("statusline", get_full_status_str(sections))
+			set_statusline(sections)
 		end
 	})
 end
