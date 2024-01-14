@@ -6,8 +6,8 @@ M.fallback_accent = vim.api.nvim_get_hl(0, { name = "PmenuSel" })
 function M.set_section_hl(grp, highlight)
 	local name = "YaslGroup" .. grp
 
-	local fallback_color = M.fallback_bg0
-	if grp == "a" or grp == "e" then
+	local fallback_color = M.fallback_bg
+	if grp == "A" or grp == "E" then
 		fallback_color = M.fallback_accent
 	end
 
