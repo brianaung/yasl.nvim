@@ -11,7 +11,7 @@ Using Lazy:
 {
     "brianaung/yasl.nvim",
     config = function()
-        require("yasl").setup()
+        require("yasl").setup() -- call this to enable plugin
     end
 }
 ```
@@ -20,38 +20,52 @@ Using Lazy:
 ### Sections layout
 ```
 +------------------------------------+
-| a | b |        | c |       | d | e |
+| A | B |        | C |       | D | E |
 +------------------------------------+
 ```
 
-### Default configuration
-See [here](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/default.lua).
+### Configuration
+See [defaults](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/default.lua).
+
+Example configuration:
 ```lua
 require("yasl").setup({
-    -- Default options
-    global = true, -- show single statusline for all files
+    global = true, -- sets laststatus 3, false sets it to 2
+    -- example sections with all available modules
     sections = {
-        -- all available modules
-        a = { components = { "mode" } },
-        b = { components = { "diagnostics" } },
-        c = { components = { "filename", "branch", "gitdiff" } },
-        d = { components = { "filetype" } },
-        e = { components = { "location", "progress" } },
+        A = { components = { "mode" } },
+        B = { components = { "diagnostics" } },
+        C = { components = { "filename", "branch", "gitdiff" } },
+        D = { components = { "filetype" } },
+        E = { components = { "location", "progress" } },
     }
 })
 ```
 
-### Custom highlights
+Leaving a section table, or its components table empty will hide that particular section.
 ```lua
-require("yasl").setup({
-    -- provide custom highlights
-    sections = {
-        -- see :h nvim_set_hl() to see the {val} format
-        a = { 
-            components = { "mode" }, 
-            highlight = { fg = "#202020", bg = "#7daea3" },
-        },
-        ...
-    }
+-- section a and b will be empty
+sections = {
+    A = {},
+    B = { components = {} },
+    ...
+}
+```
+
+Passing an empty table to `sections` will result in an empty statusline.
+```lua
+sections = {}
+```
+
+You can also pass in custom highlights to each section.
+```lua
+-- provide custom highlights
+sections = {
+    -- see :h nvim_set_hl() to see the {val} format
+    A = { 
+        components = { "mode" }, 
+        highlight = { fg = "#202020", bg = "#7daea3" },
+    },
+    ...
 }
 ```
