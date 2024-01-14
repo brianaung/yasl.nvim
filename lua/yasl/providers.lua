@@ -1,8 +1,50 @@
 local split_lines = require("yasl.utils").split_lines
 local process_diff = require("yasl.utils").process_diff
 
+-- credit to: https://github.com/famiu/feline.nvim/blob/3587f57480b88e8009df7b36dc84e9c7ff8f2c49/lua/feline/providers/vi_mode.lua#L5
+local mode_alias = {
+	['n'] = 'NORMAL',
+	['no'] = 'OP',
+	['nov'] = 'OP',
+	['noV'] = 'OP',
+	['no'] = 'OP',
+	['niI'] = 'NORMAL',
+	['niR'] = 'NORMAL',
+	['niV'] = 'NORMAL',
+	['v'] = 'VISUAL',
+	['vs'] = 'VISUAL',
+	['V'] = 'LINES',
+	['Vs'] = 'LINES',
+	[''] = 'BLOCK',
+	['s'] = 'BLOCK',
+	['s'] = 'SELECT',
+	['S'] = 'SELECT',
+	[''] = 'BLOCK',
+	['i'] = 'INSERT',
+	['ic'] = 'INSERT',
+	['ix'] = 'INSERT',
+	['R'] = 'REPLACE',
+	['Rc'] = 'REPLACE',
+	['Rv'] = 'V-REPLACE',
+	['Rx'] = 'REPLACE',
+	['c'] = 'COMMAND',
+	['cv'] = 'COMMAND',
+	['ce'] = 'COMMAND',
+	['r'] = 'ENTER',
+	['rm'] = 'MORE',
+	['r?'] = 'CONFIRM',
+	['!'] = 'SHELL',
+	['t'] = 'TERM',
+	['nt'] = 'TERM',
+	['null'] = 'NONE',
+}
+
 -- todo: how can i use these providers inside luaeval without making them global??
 YaslProviders = YaslProviders or {}
+
+function YaslProviders.mode()
+	return mode_alias[vim.fn.mode()]
+end
 
 function YaslProviders.branch()
 	local branch = vim.fn.system("git branch --show-current 2> /dev/null | tr -d '\n'")

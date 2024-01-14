@@ -1,6 +1,6 @@
 local component_types = require("yasl.component").component_types
 local is_component_empty = require("yasl.component").is_component_empty
-local set_hl = require("yasl.highlights").set_hl
+local set_group_hl = require("yasl.highlights").set_group_hl
 
 local function get_status_grp(section, grp_name)
 	if section.components == nil or
@@ -9,9 +9,9 @@ local function get_status_grp(section, grp_name)
 		return ""
 	end
 
-	set_hl(grp_name, section.highlight)
+	set_group_hl(grp_name, section.highlight)
 
-	local curr = string.format("%s%s%s", "%#", grp_name, "#")
+	local curr = string.format("%s%s%s", "%#", "YaslGroup" .. grp_name, "#")
 	for _, component in ipairs(section.components) do
 		curr = string.format("%s %s", curr, component_types[component])
 	end
