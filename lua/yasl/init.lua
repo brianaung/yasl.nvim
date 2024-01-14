@@ -1,8 +1,3 @@
--- todo: is there a better way than polluting global namespace?
-_G.diagnostics = require("yasl.providers").diagnostics
-_G.branch = require("yasl.providers").branch
-_G.gitdiff = require("yasl.providers").gitdiff
-
 local default_opts = require("yasl.default")
 local set_statusline = require("yasl.statusline").set_statusline
 local on_enter_refresh_events = { "LspAttach", "WinEnter", "BufEnter" }

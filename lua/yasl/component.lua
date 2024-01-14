@@ -1,11 +1,13 @@
+require("yasl.providers")
+
 local M = {}
 
 M.components = {
 	["mode"] = "%{mode()}",
 	["filename"] = "%<%t%h%m%r%w",
-	["branch"] = "%{luaeval('branch()')}",
-	["gitdiff"] = "%{luaeval('gitdiff()')}",
-	["diagnostics"] = "%{luaeval('diagnostics()')}",
+	["branch"] = "%{luaeval('YaslProviders.branch()')}",
+	["gitdiff"] = "%{luaeval('YaslProviders.gitdiff()')}",
+	["diagnostics"] = "%{luaeval('YaslProviders.diagnostics()')}",
 	["filetype"] = "%y",
 	["progress"] = "%P",
 	["location"] = "%-8.(%l, %c%V%)",
@@ -16,7 +18,7 @@ function M.is_component_empty(component)
 	if component == "filetype" and #vim.fn.expand("%") == 0 then
 		return true
 	end
-	if component == "diagnostics" and diagnostics() == "" then
+	if component == "diagnostics" and YaslProviders.diagnostics() == "" then
 		return true
 	end
 	return false
