@@ -3,6 +3,8 @@ _G.diagnostics = require("yasl.component").diagnostics
 _G.branch = require("yasl.component").branch
 _G.gitdiff = require("yasl.component").gitdiff
 
+local default_opts = require("yasl.default")
+
 local components = {
 	["mode"] = "%{mode()}",
 	["filename"] = "%<%t%h%m%r%w",
@@ -14,15 +16,7 @@ local components = {
 	["location"] = "%-8.(%l, %c%V%)",
 }
 
-local default_sections = {
-	a = { components = { "mode" } },
-	b = { components = { "diagnostics" } },
-	c = { components = { "filename", "branch", "gitdiff" } },
-	d = { components = { "filetype" } },
-	e = { components = { "location", "progress" } },
-}
-
-local default_refresh_events = { "LspAttach", "WinEnter", "BufEnter" }
+local refresh_events = { "LspAttach", "WinEnter", "BufEnter" }
 
 local fallback_color = vim.api.nvim_get_hl(0, { name = "StatusLine" })
 
@@ -71,7 +65,7 @@ local M = {}
 
 function M.setup(opts)
 	-- opts.global
-	local global = true
+	local global = default_opts.global
 	if (opts and opts.global ~= nil) then
 		global = opts.global
 	end
@@ -82,9 +76,9 @@ function M.setup(opts)
 	end
 
 	-- opts.sections
-	local sections = (opts and opts.sections) and opts.sections or default_sections
+	local sections = (opts and opts.sections) and opts.sections or default_opts.sections
 	set_statusline(sections)
-	vim.api.nvim_create_autocmd(default_refresh_events, {
+	vim.api.nvim_create_autocmd(refresh_events, {
 		callback = function()
 			set_statusline(sections)
 		end
