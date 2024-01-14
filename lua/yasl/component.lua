@@ -3,7 +3,7 @@ require("yasl.providers")
 local M = {}
 
 M.component_types = {
-	["mode"] = "%{mode()}",
+	["mode"] = "%{luaeval('YaslProviders.mode()')}",
 	["filename"] = "%<%t%h%m%r%w",
 	["branch"] = "%{luaeval('YaslProviders.branch()')}",
 	["gitdiff"] = "%{luaeval('YaslProviders.gitdiff()')}",
