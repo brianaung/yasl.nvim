@@ -2,6 +2,7 @@ require("yasl.providers")
 
 local M = {}
 
+-- todo: how can i use these providers inside luaeval without making them global??, or how can i not use luaeval at all.
 M.component_types = {
 	["mode"] = "%{luaeval('YaslProviders.mode()')}",
 	["filename"] = "%<%t%h%m%r%w",

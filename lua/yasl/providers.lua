@@ -39,7 +39,6 @@ local mode_alias = {
 	['null'] = 'NONE',
 }
 
--- todo: how can i use these providers inside luaeval without making them global??
 YaslProviders = YaslProviders or {}
 
 function YaslProviders.mode()
