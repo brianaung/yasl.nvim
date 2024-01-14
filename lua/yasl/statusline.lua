@@ -11,7 +11,7 @@ local function get_status_grp(section, grp_name)
 
 	set_group_hl(grp_name, section.highlight)
 
-	local curr = string.format("%s%s%s", "%#", grp_name, "#")
+	local curr = string.format("%s%s%s", "%#", "YaslGroup" .. grp_name, "#")
 	for _, component in ipairs(section.components) do
 		curr = string.format("%s %s", curr, component_types[component])
 	end
