@@ -25,6 +25,7 @@ Using Lazy:
 ```
 
 ### Default configuration
+See [here](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/default.lua).
 ```lua
 require("yasl").setup({
     -- Default options
