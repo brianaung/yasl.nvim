@@ -16,7 +16,8 @@ local components = {
 	["location"] = "%-8.(%l, %c%V%)",
 }
 
-local refresh_events = { "LspAttach", "WinEnter", "BufEnter" }
+local on_enter_refresh_events = { "LspAttach", "WinEnter", "BufEnter" }
+local on_leave_refresh_events = { "WinLeave", "BufLeave" }
 
 local fallback_color = vim.api.nvim_get_hl(0, { name = "StatusLine" })
 
@@ -50,7 +51,7 @@ local function get_status_grp(section, grp_name)
 end
 
 local function set_statusline(sections)
-	vim.api.nvim_set_option("statusline", table.concat({
+	vim.api.nvim_win_set_option(0, "statusline", table.concat({
 		get_status_grp(vim.F.if_nil(sections.a, {}), "a"),
 		get_status_grp(vim.F.if_nil(sections.b, {}), "b"),
 		"%=",
@@ -78,9 +79,15 @@ function M.setup(opts)
 	-- opts.sections
 	local sections = (opts and opts.sections) and opts.sections or default_opts.sections
 	set_statusline(sections)
-	vim.api.nvim_create_autocmd(refresh_events, {
+	vim.api.nvim_create_autocmd(on_enter_refresh_events, {
 		callback = function()
 			set_statusline(sections)
+		end
+	})
+	vim.api.nvim_create_autocmd(on_leave_refresh_events, {
+		callback = function()
+			-- clear status line back to default
+			vim.api.nvim_win_set_option(0, "statusline", "")
 		end
 	})
 end
