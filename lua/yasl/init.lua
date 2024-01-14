@@ -3,6 +3,7 @@ _G.diagnostics = require("yasl.component").diagnostics
 _G.branch = require("yasl.component").branch
 _G.gitdiff = require("yasl.component").gitdiff
 
+local set_hl = require("yasl.highlights").set_hl
 local default_opts = require("yasl.default")
 
 local components = {
@@ -18,8 +19,6 @@ local components = {
 
 local on_enter_refresh_events = { "LspAttach", "WinEnter", "BufEnter" }
 local on_leave_refresh_events = { "WinLeave", "BufLeave" }
-
-local fallback_color = vim.api.nvim_get_hl(0, { name = "StatusLine" })
 
 
 -- some component can have empty content, in which case we don't want to show the bg
@@ -40,8 +39,7 @@ local function get_status_grp(section, grp_name)
 		return ""
 	end
 
-	-- set highlight (or its fallback)
-	vim.api.nvim_set_hl(0, grp_name, vim.F.if_nil(section.highlight, fallback_color))
+	set_hl(grp_name, section.highlight)
 
 	local curr = string.format("%s%s%s", "%#", grp_name, "#")
 	for _, val in ipairs(section.components) do
@@ -79,6 +77,8 @@ function M.setup(opts)
 	-- opts.sections
 	local sections = (opts and opts.sections) and opts.sections or default_opts.sections
 	set_statusline(sections)
+
+	-- refresh events
 	vim.api.nvim_create_autocmd(on_enter_refresh_events, {
 		callback = function()
 			set_statusline(sections)
