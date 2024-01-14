@@ -49,8 +49,8 @@ local function get_status_grp(section, grp_name)
 	vim.api.nvim_set_hl(0, grp_name, vim.F.if_nil(section.highlight, fallback_color))
 
 	local curr = string.format("%s%s%s", "%#", grp_name, "#")
-	for i = 1, #section.components do
-		curr = string.format("%s %s", curr, components[section.components[i]])
+	for _, val in ipairs(section.components) do
+		curr = string.format("%s %s", curr, components[val])
 	end
 	return string.format("%s %s", curr, "%*")
 end
