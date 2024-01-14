@@ -22,6 +22,12 @@ function M.is_component_empty(component)
 	if component == "diagnostics" and YaslProviders.diagnostics() == "" then
 		return true
 	end
+	if component == "gitdiff" and YaslProviders.gitdiff() == "" then
+		return true
+	end
+	if component == "branch" and YaslProviders.branch() == "" then
+		return true
+	end
 	return false
 end
 
