@@ -22,13 +22,13 @@ local M = {}
 
 function M.set_statusline(sections)
 	vim.api.nvim_win_set_option(0, "statusline", table.concat({
-		get_section_status(vim.F.if_nil(sections.a, {}), "a"),
-		get_section_status(vim.F.if_nil(sections.b, {}), "b"),
+		get_section_status(vim.F.if_nil(sections.A, {}), "A"),
+		get_section_status(vim.F.if_nil(sections.B, {}), "B"),
 		"%=",
-		get_section_status(vim.F.if_nil(sections.c, {}), "c"),
+		get_section_status(vim.F.if_nil(sections.C, {}), "C"),
 		"%=",
-		get_section_status(vim.F.if_nil(sections.d, {}), "d"),
-		get_section_status(vim.F.if_nil(sections.e, {}), "e")
+		get_section_status(vim.F.if_nil(sections.D, {}), "D"),
+		get_section_status(vim.F.if_nil(sections.E, {}), "E")
 	}))
 end
 

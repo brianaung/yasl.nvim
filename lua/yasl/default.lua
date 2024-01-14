@@ -5,10 +5,10 @@ return {
 	global = true,
 
 	sections = {
-		a = { components = { "mode" }, highlight = accent },
-		b = { components = { "diagnostics" }, highlight = bg },
-		c = { components = { "filename", "branch", "gitdiff" }, highlight = bg },
-		d = { components = { "filetype" }, highlight = bg },
-		e = { components = { "location", "progress" }, highlight = accent },
+		A = { components = { "mode" }, highlight = accent },
+		B = { components = { "diagnostics" }, highlight = bg },
+		C = { components = { "filename", "branch", "gitdiff" }, highlight = bg },
+		D = { components = { "filetype" }, highlight = bg },
+		E = { components = { "location", "progress" }, highlight = accent },
 	}
 }
