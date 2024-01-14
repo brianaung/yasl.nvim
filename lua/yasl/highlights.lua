@@ -3,7 +3,7 @@ local M = {}
 M.fallback_bg = vim.api.nvim_get_hl(0, { name = "StatusLine" })
 M.fallback_accent = vim.api.nvim_get_hl(0, { name = "PmenuSel" })
 
-function M.set_group_hl(grp, highlight)
+function M.set_section_hl(grp, highlight)
 	local name = "YaslGroup" .. string.upper(grp)
 
 	local fallback_color = M.fallback_bg0
