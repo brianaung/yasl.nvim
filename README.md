@@ -33,26 +33,46 @@ Using Lazy:
 ```
 
 ### Configuration
-See [defaults](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/default.lua).
+**See [defaults](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/default.lua).**
 
-Example configuration:
+**Enable/Disable global statusline.**
 ```lua
-require("yasl").setup({
-    global = true, -- sets laststatus 3, false sets it to 2
-    -- example sections with all available modules
-    sections = {
-        A = { components = { "mode" } },
-        B = { components = { "diagnostics" } },
-        C = { components = { "filename", "branch", "gitdiff" } },
-        D = { components = { "filetype" } },
-        E = { components = { "location", "progress" } },
-    }
-})
+global = true, -- default
 ```
 
-Leaving a section table, or its components table empty will hide that particular section.
+**All provided components.**
 ```lua
--- section a and b will be empty
+-- default sections
+sections = {
+    A = { components = { "mode" } },
+    B = { components = { "diagnostics" } },
+    C = { components = { "filename", "branch", "gitdiff" } },
+    D = { components = { "filetype" } },
+    E = { components = { "location", "progress" } },
+}
+```
+
+**Using any statusline items that are available in vim but not provided by default.**
+```lua
+sections = {
+    A = {
+        components = { 
+            -- use provided `mode` component
+            "mode", 
+            -- pass a function that return any statusline item provided by vim. 
+            -- see h: statusline
+            function()
+                return "%n" 
+            end
+        } 
+    },
+    ...
+}
+```
+
+**Leaving a section table, or its components table empty will hide that particular section.**
+```lua
+-- section A and B will be empty
 sections = {
     A = {},
     B = { components = {} },
@@ -60,12 +80,12 @@ sections = {
 }
 ```
 
-Passing an empty table to `sections` will result in an empty statusline.
+**Passing an empty table to `sections` will result in an empty statusline.**
 ```lua
 sections = {}
 ```
 
-You can also pass in custom highlights to each section.
+**You can also pass in custom highlights to each section.**
 ```lua
 -- provide custom highlights
 sections = {
