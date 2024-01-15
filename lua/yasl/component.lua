@@ -8,11 +8,14 @@ M.component_types = {
 	["filename"] = "%<%t%h%m%r%w",
 	["branch"] = "%{luaeval('YaslProviders.branch()')}",
 	["gitdiff"] = "%{luaeval('YaslProviders.gitdiff()')}",
-	["diagnostics"] = "%{luaeval('YaslProviders.diagnostics()')}",
+	["diagnostics"] = "%{%luaeval('YaslProviders.diagnostics()')%}",
 	["filetype"] = "%y",
 	["progress"] = "%P",
 	["location"] = "%-8.(%l, %c%V%)",
 }
+
+function M.get_component(section)
+end
 
 -- some component can have empty content, in which case we don't want to show the bg
 function M.is_component_empty(component)

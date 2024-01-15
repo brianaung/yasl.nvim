@@ -2,16 +2,16 @@ local component_types = require("yasl.component").component_types
 local is_component_empty = require("yasl.component").is_component_empty
 local set_section_hl = require("yasl.highlights").set_section_hl
 
-local function get_section_status(section, grp_name)
+local function get_section_status(section, section_name)
 	if section.components == nil or
 			#section.components == 0 or
 			(#section.components == 1 and is_component_empty(section.components[1])) then
 		return ""
 	end
 
-	set_section_hl(grp_name, section.highlight)
+	set_section_hl(section_name, section.highlight)
 
-	local curr = string.format("%s%s%s", "%#", "YaslSection" .. grp_name, "#")
+	local curr = string.format("%s%s%s", "%#", "YaslSection" .. section_name, "#")
 	for _, component in ipairs(section.components) do
 		if type(component) == "function" then
 			-- custom component
