@@ -1,9 +1,7 @@
 require("yasl.providers")
 
-local M = {}
-
 -- todo: how can i use these providers inside luaeval without making them global??, or how can i not use luaeval at all.
-M.component_types = {
+local component_types = {
 	["mode"] = "%{luaeval('YaslProviders.mode()')}",
 	["filename"] = "%<%t%h%m%r%w",
 	["branch"] = "%{luaeval('YaslProviders.branch()')}",
@@ -14,7 +12,10 @@ M.component_types = {
 	["location"] = "%-8.(%l, %c%V%)",
 }
 
-function M.get_component(section)
+local M = {}
+
+function M.get_component(section_name, component)
+	return component_types[component]
 end
 
 -- some component can have empty content, in which case we don't want to show the bg

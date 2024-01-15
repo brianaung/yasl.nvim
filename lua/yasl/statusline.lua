@@ -1,5 +1,5 @@
-local component_types = require("yasl.component").component_types
 local is_component_empty = require("yasl.component").is_component_empty
+local get_component = require("yasl.component").get_component
 local set_section_hl = require("yasl.highlights").set_section_hl
 
 local function get_section_status(section, section_name)
@@ -9,20 +9,19 @@ local function get_section_status(section, section_name)
 		return ""
 	end
 
-	set_section_hl(section_name, section.highlight)
-
-	local curr = string.format("%s%s%s", "%#", "YaslSection" .. section_name, "#")
+	local curr = ""
 	for _, component in ipairs(section.components) do
 		if type(component) == "function" then
 			-- custom component
 			component = component()
 		else
 			-- provided component
-			component = component_types[component]
+			component = get_component(section_name, component)
 		end
 		curr = string.format("%s %s", curr, component)
 	end
-	return string.format("%s %s", curr, "%*")
+
+	return set_section_hl(section_name, section.highlight, curr)
 end
 
 local M = {}
