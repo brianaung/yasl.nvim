@@ -13,7 +13,14 @@ local function get_section_status(section, grp_name)
 
 	local curr = string.format("%s%s%s", "%#", "YaslSection" .. grp_name, "#")
 	for _, component in ipairs(section.components) do
-		curr = string.format("%s %s", curr, component_types[component])
+		if type(component) == "function" then
+			-- custom component
+			component = component()
+		else
+			-- provided component
+			component = component_types[component]
+		end
+		curr = string.format("%s %s", curr, component)
 	end
 	return string.format("%s %s", curr, "%*")
 end
