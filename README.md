@@ -2,6 +2,14 @@
 
 Yet another ***minimal and lightweight*** statusline plugin for neovim.
 
+## Features
+On top of vim's default statusline items, yasl provides:
+
+- Lsp diagnostics
+- Git informations such as branch name and diff stats.
+
+without needing any extra dependencies.
+
 ## Examples
 ![screenshot of statusline with custom colors](./examples/screenshot1.png)
 
