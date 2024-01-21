@@ -1,5 +1,5 @@
 local bg = require("yasl.highlights").fallback_bg
-local accent = require("yasl.highlights").fallback_accent
+local accent = vim.api.nvim_get_hl(0, { name = "PmenuSel" })
 
 return {
 	global = true,

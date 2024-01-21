@@ -62,7 +62,7 @@ function YaslProviders.diagnostics()
 	else
 		local errors = string.format("E%s", #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR }))
 		local warnings = string.format("W%s", #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN }))
-		ret = string.format("[LSP: %s,%s]", errors, warnings)
+		ret = string.format("[%s,%s]", errors, warnings)
 	end
 	return ret
 end
