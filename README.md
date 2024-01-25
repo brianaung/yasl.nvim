@@ -35,12 +35,12 @@ Using Lazy:
 - [diagnostics](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/diagnostics.lua)
 - [branch](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/branch.lua)
 - [gitdiff](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/gitdiff.lua)
+- Your own component. See [recipe](#recipe-for-creating-your-own-component)
 - Plus any string value vim can evaluate for statusline. See `:h statusline`.
 
 ### Default options
 ```lua
-    -- default options
-
+require("yasl").setup({
     -- Use global statusline. See :h laststatus
     global = true,
 
@@ -64,4 +64,28 @@ Using Lazy:
         "%=",
         "%y %-8.(%l, %c%V%) %P", -- filetype, location, and progress
     }
+})
+```
+
+### Recipe for creating your own component
+To provide your own custom components, simply pass in a table to `components` array
+with values for `events` and `update` set.
+
+```lua
+require("yasl").setup({
+    ...
+    components = {
+        ...
+        {
+            -- Events that will trigger update function calls and redraws the statusline.
+            events = { "BufEnter" },
+            -- Any function that returns a string value.
+            update = function()
+                return "Hello!"
+            end
+        },
+        ...
+    },
+    ...
+})
 ```
