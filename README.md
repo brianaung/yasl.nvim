@@ -3,15 +3,20 @@
 Yet another ***minimal and lightweight*** statusline plugin for neovim.
 
 ## Features
-On top of vim's default statusline items, yasl provides:
+On top of vim's default statusline items, Yasl provides:
 
 - Lsp diagnostics
-- Git informations such as branch name and diff stats.
+- Git informations 
+    - Branch name
+    - Diff stats
+- Active mode
 
-without needing any extra dependencies.
+with no extra dependencies.
+
+It also evaluates each component only when needed to prevent frequent expensive function calls.
 
 ## Examples
-![screenshot of statusline with custom colors](./examples/screenshot1.png)
+![screenshot of statusline](./examples/screenshot.png)
 
 ## Installation
 Using Lazy:
@@ -24,76 +29,63 @@ Using Lazy:
 }
 ```
 
-## Configuration
-### Sections layout
-```
-+------------------------------------+
-| A | B |        | C |       | D | E |
-+------------------------------------+
-```
+## Configurations
+### Provided components
+- [mode](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/mode.lua)
+- [diagnostics](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/diagnostics.lua)
+- [branch](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/branch.lua)
+- [gitdiff](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/gitdiff.lua)
+- Your own component. See [recipe](#recipe-for-creating-your-own-component)
+- Plus any string value vim can evaluate for statusline. See `:h statusline`.
 
-### Configuration
-**See [defaults](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/default.lua).**
-
-**Enable/Disable global statusline.**
+### Default options
 ```lua
-global = true, -- default
+require("yasl").setup({
+    -- Use global statusline. See :h laststatus
+    global = true,
+
+    --[[
+    Accepts provided component name (or)
+    any string vim can use for statusline value. See :h statusline
+
+    Default layout:
+    +---------------------------------------------------------------------+
+    | mode | name |        | diagnostics | diff |       | ft | loc | prog |
+    +---------------------------------------------------------------------+
+    ]]--
+    components = {
+        "mode",
+        " ",
+        "%<%t%h%m%r%w", -- filename
+        "branch",
+        "%=",
+        "diagnostics",
+        "gitdiff",
+        "%=",
+        "%y %-8.(%l, %c%V%) %P", -- filetype, location, and progress
+    }
+})
 ```
 
-**All provided components.**
-```lua
--- default sections
-sections = {
-    A = { components = { "mode" } },
-    B = { components = { "diagnostics" } },
-    C = { components = { "filename", "branch", "gitdiff" } },
-    D = { components = { "filetype" } },
-    E = { components = { "location", "progress" } },
-}
-```
+### Recipe for creating your own component
+To provide your own custom components, simply pass in a table to `components` array
+with values for `events` and `update` set.
 
-**Using any statusline items that are available in vim but not provided by default.**
 ```lua
-sections = {
-    A = {
-        components = { 
-            -- use provided `mode` component
-            "mode", 
-            -- pass a function that return any statusline item provided by vim. 
-            -- see h: statusline
-            function()
-                return "%n" 
+require("yasl").setup({
+    ...
+    components = {
+        ...
+        {
+            -- Events that will trigger update function calls and redraws the statusline.
+            events = { "BufEnter" },
+            -- Any function that returns a string value.
+            update = function()
+                return "Hello!"
             end
-        } 
+        },
+        ...
     },
     ...
-}
-```
-
-**Leaving a section table, or its components table empty will hide that particular section.**
-```lua
--- section A and B will be empty
-sections = {
-    A = {},
-    B = { components = {} },
-    ...
-}
-```
-
-**Passing an empty table to `sections` will result in an empty statusline.**
-```lua
-sections = {}
-```
-
-**You can also pass in custom highlights to each section.**
-```lua
--- provide custom highlights
-sections = {
-    -- see :h nvim_set_hl() to see the {val} format
-    A = { 
-        components = { "mode" }, 
-        highlight = { fg = "#202020", bg = "#7daea3" },
-    },
-    ...
-}
+})
 ```

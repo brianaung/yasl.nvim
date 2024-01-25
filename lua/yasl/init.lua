@@ -1,38 +1,49 @@
-local default_opts = require("yasl.default")
-local set_statusline = require("yasl.statusline").set_statusline
-local on_enter_refresh_events = { "LspAttach", "WinEnter", "BufEnter" }
-local on_leave_refresh_events = { "WinLeave", "BufLeave" }
+local builtins = require("yasl.builtins")
+local default = require("yasl.default")
+
+local status_strings = {}
+
+local function set_statusline(str)
+	vim.api.nvim_win_set_option(0, "statusline", table.concat(str))
+end
+
+local function create_update_group(key, component)
+	local update = component.update
+	status_strings[key] = update()
+	vim.api.nvim_create_autocmd(component.events, {
+		callback = function()
+			local new = update()
+			if status_strings[key] ~= new then
+				status_strings[key] = new
+				set_statusline(status_strings)
+			end
+		end
+	})
+end
 
 local M = {}
 
 function M.setup(opts)
+	opts = vim.F.if_nil(opts, default)
+
 	-- opts.global
-	local global = default_opts.global
-	if (opts and opts.global ~= nil) then
-		global = opts.global
-	end
-	if global then
-		vim.api.nvim_set_option("laststatus", 3)
-	else
-		vim.api.nvim_set_option("laststatus", 2)
+	local global = vim.F.if_nil(opts.global, default.global)
+	vim.api.nvim_set_option("laststatus", global and 3 or 2)
+
+	-- opts.components
+	local components = vim.F.if_nil(opts.components, default.components)
+
+	for idx, component in ipairs(components) do
+		if type(component) == "table" then
+			create_update_group(idx, component)
+		elseif type(component) == "string" and builtins[component] ~= nil then
+			create_update_group(idx, builtins[component])
+		elseif type(component) == "string" then
+			status_strings[idx] = component
+		end
 	end
 
-	-- opts.sections
-	local sections = (opts and opts.sections) and opts.sections or default_opts.sections
-	set_statusline(sections)
-
-	-- refresh events
-	vim.api.nvim_create_autocmd(on_enter_refresh_events, {
-		callback = function()
-			set_statusline(sections)
-		end
-	})
-	vim.api.nvim_create_autocmd(on_leave_refresh_events, {
-		callback = function()
-			-- clear status line back to default
-			vim.api.nvim_win_set_option(0, "statusline", "")
-		end
-	})
+	set_statusline(status_strings)
 end
 
 return M

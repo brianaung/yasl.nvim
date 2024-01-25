@@ -1,6 +1,4 @@
-local M = {}
-
-function M.split_lines(str)
+local function split_lines(str)
 	local lines = {}
 	for s in str:gmatch("[^\r\n]+") do
 		table.insert(lines, s)
@@ -9,7 +7,7 @@ function M.split_lines(str)
 end
 
 -- Adapted from https://github.com/nvim-lualine/lualine.nvim
-function M.process_diff(data)
+local function process_diff(data)
 	local added, removed, modified = 0, 0, 0
 	for _, line in ipairs(data) do
 		if string.find(line, [[^@@ ]]) then
@@ -33,4 +31,17 @@ function M.process_diff(data)
 	return { added = added, modified = modified, removed = removed }
 end
 
-return M
+return {
+	events = { "BufEnter", "BufWritePost" },
+	update = function()
+		if #vim.fn.expand("%") == 0 then return "" end -- no opened buffer
+
+		local raw_diff = vim.fn.system(string.format("git --no-pager diff --no-color --no-ext-diff -U0 -- %s",
+			vim.fn.expand("%")))
+
+		-- if #raw_diff == 0 then return "" end -- no diff stats
+
+		local diff_stats = process_diff(split_lines(raw_diff))
+		return string.format("[+%s,-%s,~%s]", diff_stats.added, diff_stats.removed, diff_stats.modified)
+	end
+}
