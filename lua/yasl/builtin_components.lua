@@ -61,5 +61,17 @@ return {
 			local diff_stats = process_diff(split_lines(raw_diff))
 			return string.format("[+%s,-%s,~%s]", diff_stats.added, diff_stats.removed, diff_stats.modified)
 		end
-	}
+	},
+
+	["branch"] = {
+		events = { "BufEnter" },
+		update = function()
+			local branch = vim.fn.system("git branch --show-current 2> /dev/null | tr -d '\n'")
+			if branch ~= "" then
+				return string.format("[%s]", branch)
+			else
+				return ""
+			end
+		end
+	},
 }
