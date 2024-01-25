@@ -31,6 +31,28 @@ local function process_diff(data)
 	return { added = added, modified = modified, removed = removed }
 end
 
+-- set diff hl
+(function()
+	local diff_hl = {
+		["Added"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "DiffAdded" }).fg, "red"),
+			bg = vim.api.nvim_get_hl(0, { name = "StatusLine" }).bg,
+		},
+		["Removed"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "DiffRemoved" }).fg, "yellow"),
+			bg = vim.api.nvim_get_hl(0, { name = "StatusLine" }).bg,
+		},
+		["Modified"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "DiffLine" }).fg, "cyan"),
+			bg = vim.api.nvim_get_hl(0, { name = "StatusLine" }).bg,
+		},
+	}
+
+	for key, val in pairs(diff_hl) do
+		vim.api.nvim_set_hl(0, "Yasl" .. key, val)
+	end
+end)()
+
 return {
 	events = { "BufEnter", "BufWritePost" },
 	update = function()
@@ -39,9 +61,20 @@ return {
 		local raw_diff = vim.fn.system(string.format("git --no-pager diff --no-color --no-ext-diff -U0 -- %s",
 			vim.fn.expand("%")))
 
-		-- if #raw_diff == 0 then return "" end -- no diff stats
+		if #raw_diff == 0 then return "" end -- no diff stats
 
+		local added, removed, modified = "", "", ""
 		local diff_stats = process_diff(split_lines(raw_diff))
-		return string.format("[+%s,-%s,~%s]", diff_stats.added, diff_stats.removed, diff_stats.modified)
+		if diff_stats.added > 0 then
+			added = string.format("%%#YaslAdded#+%s%%* ", diff_stats.added)
+		end
+		if diff_stats.removed > 0 then
+			removed = string.format("%%#YaslRemoved#-%s%%* ", diff_stats.removed)
+		end
+		if diff_stats.modified > 0 then
+			modified = string.format("%%#YaslModified#~%s%%*", diff_stats.modified)
+		end
+
+		return string.format("%s%s%s", added, removed, modified)
 	end
 }
