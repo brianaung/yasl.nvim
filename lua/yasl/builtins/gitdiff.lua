@@ -1,3 +1,10 @@
+-- set diff hl
+(function()
+	for key, val in pairs(require("yasl.highlights").diff) do
+		vim.api.nvim_set_hl(0, "Yasl" .. key, val)
+	end
+end)()
+
 local function split_lines(str)
 	local lines = {}
 	for s in str:gmatch("[^\r\n]+") do
@@ -30,28 +37,6 @@ local function process_diff(data)
 	end
 	return { added = added, modified = modified, removed = removed }
 end
-
--- set diff hl
-(function()
-	local diff_hl = {
-		["Added"] = {
-			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "DiffAdded" }).fg, "red"),
-			bg = vim.api.nvim_get_hl(0, { name = "StatusLine" }).bg,
-		},
-		["Removed"] = {
-			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "DiffRemoved" }).fg, "yellow"),
-			bg = vim.api.nvim_get_hl(0, { name = "StatusLine" }).bg,
-		},
-		["Modified"] = {
-			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "DiffLine" }).fg, "cyan"),
-			bg = vim.api.nvim_get_hl(0, { name = "StatusLine" }).bg,
-		},
-	}
-
-	for key, val in pairs(diff_hl) do
-		vim.api.nvim_set_hl(0, "Yasl" .. key, val)
-	end
-end)()
 
 return {
 	events = { "BufEnter", "BufWritePost" },

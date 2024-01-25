@@ -1,25 +1,6 @@
 -- set diagnostic hl
 (function()
-	local diagnostic_hl = {
-		["Error"] = {
-			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "DiagnosticError" }).fg, "red"),
-			bg = vim.api.nvim_get_hl(0, { name = "StatusLine" }).bg,
-		},
-		["Warn"] = {
-			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "DiagnosticWarn" }).fg, "yellow"),
-			bg = vim.api.nvim_get_hl(0, { name = "StatusLine" }).bg,
-		},
-		["Info"] = {
-			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "DiagnosticInfo" }).fg, "blue"),
-			bg = vim.api.nvim_get_hl(0, { name = "StatusLine" }).bg,
-		},
-		["Hint"] = {
-			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "DiagnosticHint" }).fg, "cyan"),
-			bg = vim.api.nvim_get_hl(0, { name = "StatusLine" }).bg,
-		},
-	}
-
-	for key, val in pairs(diagnostic_hl) do
+	for key, val in pairs(require("yasl.highlights").diagnostic) do
 		vim.api.nvim_set_hl(0, "Yasl" .. key, val)
 	end
 end)()
