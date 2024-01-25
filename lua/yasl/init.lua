@@ -4,7 +4,7 @@ local default = require("yasl.default")
 local status_strings = {}
 
 local function set_statusline(str)
-	vim.api.nvim_win_set_option(0, "statusline", table.concat(str))
+	vim.api.nvim_set_option("statusline", table.concat(str))
 end
 
 local function create_update_group(key, component)
