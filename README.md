@@ -4,17 +4,19 @@ Yet another ***minimal and lightweight*** statusline plugin for neovim.
 
 ## Features
 On top of vim's default statusline items, Yasl provides:
-- Current mode
+
 - Lsp diagnostics
 - Git informations 
     - Branch name
     - Diff stats
-without any extra dependencies.
+- Active mode
 
-Yasl evaluates each provided component only when needed to prevent frequent expensive function calls.
+with no extra dependencies.
+
+It also evaluates each component only when needed to prevent frequent expensive function calls.
 
 ## Examples
-![screenshot of statusline with custom colors](./examples/screenshot.png)
+![screenshot of statusline](./examples/screenshot.png)
 
 ## Installation
 Using Lazy:
@@ -28,14 +30,14 @@ Using Lazy:
 ```
 
 ## Configurations
-### Components Provided
-- [mode](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/mode.lua).
-- [diagnostics](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/diagnostics.lua).
-- [branch](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/branch.lua).
-- [gitdiff](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/gitdiff.lua).
+### Provided components
+- [mode](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/mode.lua)
+- [diagnostics](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/diagnostics.lua)
+- [branch](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/branch.lua)
+- [gitdiff](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/gitdiff.lua)
 - Plus any string value vim can evaluate for statusline. See `:h statusline`.
 
-### Defaults
+### Default options
 ```lua
     -- default options
 
@@ -47,9 +49,9 @@ Using Lazy:
     any string vim can use for statusline value. See :h statusline
 
     Default layout:
-    +-------------------------------------------------------------------+
+    +---------------------------------------------------------------------+
     | mode | name |        | diagnostics | diff |       | ft | loc | prog |
-    +-------------------------------------------------------------------+
+    +---------------------------------------------------------------------+
     ]]--
     components = {
         "mode",
