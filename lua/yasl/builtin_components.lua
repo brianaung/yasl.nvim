@@ -1,3 +1,40 @@
+local mode_alias = {
+	['n'] = 'NORMAL',
+	['no'] = 'OP',
+	['nov'] = 'OP',
+	['noV'] = 'OP',
+	['no'] = 'OP',
+	['niI'] = 'NORMAL',
+	['niR'] = 'NORMAL',
+	['niV'] = 'NORMAL',
+	['v'] = 'VISUAL',
+	['vs'] = 'VISUAL',
+	['V'] = 'LINES',
+	['Vs'] = 'LINES',
+	[''] = 'BLOCK',
+	['s'] = 'BLOCK',
+	['s'] = 'SELECT',
+	['S'] = 'SELECT',
+	[''] = 'BLOCK',
+	['i'] = 'INSERT',
+	['ic'] = 'INSERT',
+	['ix'] = 'INSERT',
+	['R'] = 'REPLACE',
+	['Rc'] = 'REPLACE',
+	['Rv'] = 'V-REPLACE',
+	['Rx'] = 'REPLACE',
+	['c'] = 'COMMAND',
+	['cv'] = 'COMMAND',
+	['ce'] = 'COMMAND',
+	['r'] = 'ENTER',
+	['rm'] = 'MORE',
+	['r?'] = 'CONFIRM',
+	['!'] = 'SHELL',
+	['t'] = 'TERM',
+	['nt'] = 'TERM',
+	['null'] = 'NONE',
+}
+
 local function split_lines(str)
 	local lines = {}
 	for s in str:gmatch("[^\r\n]+") do
@@ -32,6 +69,13 @@ local function process_diff(data)
 end
 
 return {
+	["mode"] = {
+		events = { "BufEnter", "ModeChanged" },
+		update = function()
+			return "[" .. mode_alias[vim.fn.mode()] .. "]"
+		end
+	},
+
 	["diagnostics"] = {
 		events = { "LspAttach", "DiagnosticChanged" },
 		update = function()
@@ -49,7 +93,7 @@ return {
 	},
 
 	["gitdiff"] = {
-		events = { "BufWritePost", "BufEnter" },
+		events = { "BufEnter", "BufWritePost" },
 		update = function()
 			if #vim.fn.expand("%") == 0 then return "" end -- no opened buffer
 
