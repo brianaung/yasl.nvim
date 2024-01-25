@@ -16,7 +16,11 @@ with no extra dependencies.
 It also evaluates each component only when needed to prevent frequent expensive function calls.
 
 ## Examples
-![screenshot of statusline](./examples/screenshot.png)
+![screenshot of statusline in normal mode](./examples/ss-normal.png)
+![screenshot of statusline in insert mode](./examples/ss-insert.png)
+![screenshot of statusline in visual mode](./examples/ss-visual.png)
+![screenshot of statusline in command mode](./examples/ss-command.png)
+![screenshot of statusline in replace mode](./examples/ss-replace.png)
 
 ## Installation
 Using Lazy:
