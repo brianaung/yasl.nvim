@@ -44,6 +44,8 @@ function M.setup(opts)
 	end
 
 	set_statusline(status_strings)
+
+	vim.api.nvim_set_option("showmode", false)
 end
 
 return M
