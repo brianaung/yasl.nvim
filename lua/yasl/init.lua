@@ -1,4 +1,4 @@
-local builtin_components = require("yasl.builtin_components")
+local builtins = require("yasl.builtins")
 local default = require("yasl.default")
 
 local status_strings = {}
@@ -33,8 +33,8 @@ function M.setup(opts)
 	for idx, component in ipairs(components) do
 		if type(component) == "table" then
 			create_update_group(idx, component)
-		elseif type(component) == "string" and builtin_components[component] ~= nil then
-			create_update_group(idx, builtin_components[component])
+		elseif type(component) == "string" and builtins[component] ~= nil then
+			create_update_group(idx, builtins[component])
 		elseif type(component) == "string" then
 			status_strings[idx] = component
 		end
