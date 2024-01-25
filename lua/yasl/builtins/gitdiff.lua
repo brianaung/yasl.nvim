@@ -48,17 +48,10 @@ return {
 
 		if #raw_diff == 0 then return "" end -- no diff stats
 
-		local added, removed, modified = "", "", ""
 		local diff_stats = process_diff(split_lines(raw_diff))
-		if diff_stats.added > 0 then
-			added = string.format("%%#YaslAdded#+%s%%* ", diff_stats.added)
-		end
-		if diff_stats.removed > 0 then
-			removed = string.format("%%#YaslRemoved#-%s%%* ", diff_stats.removed)
-		end
-		if diff_stats.modified > 0 then
-			modified = string.format("%%#YaslModified#~%s%%*", diff_stats.modified)
-		end
+		local added = diff_stats.added > 0 and string.format("%%#YaslAdded#+%s%%* ", diff_stats.added) or ""
+		local removed = diff_stats.removed > 0 and string.format("%%#YaslRemoved#-%s%%* ", diff_stats.removed) or ""
+		local modified = diff_stats.modified > 0 and string.format("%%#YaslModified#~%s%%*", diff_stats.modified) or ""
 
 		return string.format("%s%s%s", added, removed, modified)
 	end
