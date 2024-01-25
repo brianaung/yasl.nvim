@@ -1,4 +1,4 @@
-local builtin_components = require("yasl.components")
+local builtin_components = require("yasl.builtin_components")
 local default = require("yasl.default")
 
 local M = {}
