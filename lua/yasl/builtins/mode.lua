@@ -36,7 +36,8 @@ local mode_alias = {
 }
 
 -- Note: still experimental, kinda hacky
-local function set_mode_hl()
+-- set_mode_hl
+(function()
 	local mode_hl = {
 		["NORMAL"] = {
 			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
@@ -103,8 +104,7 @@ local function set_mode_hl()
 	for key, val in pairs(mode_hl) do
 		vim.api.nvim_set_hl(0, "Yasl" .. key, val)
 	end
-end
-set_mode_hl()
+end)()
 
 return {
 	events = { "BufEnter", "ModeChanged" },
