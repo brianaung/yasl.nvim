@@ -35,9 +35,81 @@ local mode_alias = {
 	['null'] = 'NONE',
 }
 
+-- Note: still experimental, kinda hacky
+local function set_mode_hl()
+	local mode_hl = {
+		["NORMAL"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "String" }).fg, "green"),
+		},
+		["OP"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "String" }).fg, "green"),
+		},
+		["INSERT"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).fg, "white"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Error" }).fg, "red"),
+		},
+		["VISUAL"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Function" }).fg, "skyblue"),
+		},
+		["LINES"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Function" }).fg, "skyblue"),
+		},
+		["BLOCK"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Function" }).fg, "skyblue"),
+		},
+		["REPLACE"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Keyword" }).fg, "violet"),
+		},
+		["V-REPLACE"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Keyword" }).fg, "violet"),
+		},
+		["ENTER"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Special" }).fg, "cyan"),
+		},
+		["MORE"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Special" }).fg, "cyan"),
+		},
+		["SELECT"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Constant" }).fg, "orange"),
+		},
+		["COMMAND"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Type" }).fg, "yellow"),
+		},
+		["SHELL"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "String" }).fg, "green"),
+		},
+		["TERM"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "String" }).fg, "green"),
+		},
+		["NONE"] = {
+			fg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Normal" }).bg, "black"),
+			bg = vim.F.if_nil(vim.api.nvim_get_hl(0, { name = "Type" }).fg, "yellow"),
+		},
+	}
+
+	for key, val in pairs(mode_hl) do
+		vim.api.nvim_set_hl(0, "Yasl" .. key, val)
+	end
+end
+set_mode_hl()
+
 return {
 	events = { "BufEnter", "ModeChanged" },
 	update = function()
-		return "[" .. mode_alias[vim.fn.mode()] .. "]"
+		local mode = mode_alias[vim.fn.mode()]
+		return string.format("%%#Yasl%s# %s %%*", mode, mode)
 	end
 }
