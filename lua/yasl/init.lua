@@ -12,8 +12,11 @@ local function create_update_group(key, component)
 	status_strings[key] = update()
 	vim.api.nvim_create_autocmd(component.events, {
 		callback = function()
-			status_strings[key] = update()
-			set_statusline(status_strings)
+			local new = update()
+			if status_strings[key] ~= new then
+				status_strings[key] = new
+				set_statusline(status_strings)
+			end
 		end
 	})
 end
