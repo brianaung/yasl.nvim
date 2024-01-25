@@ -3,5 +3,6 @@ return {
 	components = {
 		"%t",
 		"diagnostics",
+		"gitdiff",
 	}
 }
