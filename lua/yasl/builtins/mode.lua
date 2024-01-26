@@ -43,7 +43,7 @@ local mode_alias = {
 }
 
 return {
-	events = { "BufEnter", "ModeChanged" },
+	events = { "WinEnter", "BufEnter", "ModeChanged" },
 	update = function()
 		local mode = mode_alias[vim.fn.mode()]
 		return string.format("%%#Yasl%s# %s %%*", mode, mode)
