@@ -1,4 +1,5 @@
 return {
+	name = "branch",
 	events = { "WinEnter", "BufEnter" },
 	update = function()
 		local branch = vim.fn.system("git branch --show-current 2> /dev/null | tr -d '\n'")

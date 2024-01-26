@@ -10,6 +10,7 @@ local function get_diagnostic_count(severity)
 end
 
 return {
+	name = "diagnostics",
 	events = { "WinEnter", "BufEnter", "LspAttach", "DiagnosticChanged" },
 	update = function()
 		local clients = vim.lsp.get_active_clients { buffer = 0 }

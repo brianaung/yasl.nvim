@@ -39,6 +39,7 @@ local function process_diff(data)
 end
 
 return {
+	name = "gitdiff",
 	events = { "WinEnter", "BufEnter", "BufWritePost" },
 	update = function()
 		if #vim.fn.expand("%") == 0 then return "" end -- no opened buffer

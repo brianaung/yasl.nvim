@@ -1,72 +1,55 @@
 -- Note: colors are still experimental, kinda hacky
-
 local if_nil = vim.F.if_nil
 local function get_hl(name)
 	return vim.api.nvim_get_hl(0, { name = name })
 end
 
+local green = {
+	fg = if_nil(get_hl("Normal").bg, "black"),
+	bg = if_nil(get_hl("String").fg, "green"),
+}
+local red = {
+	fg = if_nil(get_hl("Normal").fg, "white"),
+	bg = if_nil(get_hl("Error").fg, "red"),
+}
+local skyblue = {
+	fg = if_nil(get_hl("Normal").bg, "black"),
+	bg = if_nil(get_hl("Function").fg, "skyblue"),
+}
+local violet = {
+	fg = if_nil(get_hl("Normal").bg, "black"),
+	bg = if_nil(get_hl("Keyword").fg, "violet"),
+}
+local cyan = {
+	fg = if_nil(get_hl("Normal").bg, "black"),
+	bg = if_nil(get_hl("Special").fg, "cyan"),
+}
+local orange = {
+	fg = if_nil(get_hl("Normal").bg, "black"),
+	bg = if_nil(get_hl("Constant").fg, "orange"),
+}
+local yellow = {
+	fg = if_nil(get_hl("Normal").bg, "black"),
+	bg = if_nil(get_hl("Type").fg, "yellow"),
+}
+
 return {
 	["mode"] = {
-		["NORMAL"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("String").fg, "green"),
-		},
-		["OP"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("String").fg, "green"),
-		},
-		["INSERT"] = {
-			fg = if_nil(get_hl("Normal").fg, "white"),
-			bg = if_nil(get_hl("Error").fg, "red"),
-		},
-		["VISUAL"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("Function").fg, "skyblue"),
-		},
-		["LINES"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("Function").fg, "skyblue"),
-		},
-		["BLOCK"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("Function").fg, "skyblue"),
-		},
-		["REPLACE"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("Keyword").fg, "violet"),
-		},
-		["V-REPLACE"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("Keyword").fg, "violet"),
-		},
-		["ENTER"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("Special").fg, "cyan"),
-		},
-		["MORE"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("Special").fg, "cyan"),
-		},
-		["SELECT"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("Constant").fg, "orange"),
-		},
-		["COMMAND"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("Type").fg, "yellow"),
-		},
-		["SHELL"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("String").fg, "green"),
-		},
-		["TERM"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("String").fg, "green"),
-		},
-		["NONE"] = {
-			fg = if_nil(get_hl("Normal").bg, "black"),
-			bg = if_nil(get_hl("Type").fg, "yellow"),
-		},
+		["NORMAL"] = green,
+		["OP"] = green,
+		["INSERT"] = red,
+		["VISUAL"] = skyblue,
+		["LINES"] = skyblue,
+		["BLOCK"] = skyblue,
+		["REPLACE"] = violet,
+		["V-REPLACE"] = violet,
+		["ENTER"] = cyan,
+		["MORE"] = cyan,
+		["SELECT"] = orange,
+		["COMMAND"] = yellow,
+		["SHELL"] = green,
+		["TERM"] = green,
+		["NONE"] = yellow,
 	},
 
 	["diagnostic"] = {
