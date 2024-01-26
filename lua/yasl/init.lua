@@ -36,10 +36,13 @@ function M.setup(opts)
 	for idx, component in ipairs(components) do
 		if type(component) == "table" then
 			create_update_group(idx, component)
-		elseif type(component) == "string" and builtins[component] ~= nil then
-			create_update_group(idx, builtins[component])
 		elseif type(component) == "string" then
-			status_strings[idx] = component
+			local builtin = builtins[component]
+			if builtin ~= nil then
+				create_update_group(idx, builtin)
+			else
+				status_strings[idx] = component
+			end
 		end
 	end
 	vim.api.nvim_set_option("showmode", false)
