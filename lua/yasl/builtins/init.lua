@@ -3,6 +3,7 @@ local modules = {
 	["diagnostics"] = "yasl.builtins.diagnostics",
 	["branch"] = "yasl.builtins.branch",
 	["gitdiff"] = "yasl.builtins.gitdiff",
+	["filetype"] = "yasl.builtins.filetype",
 }
 
 -- lazy load modules

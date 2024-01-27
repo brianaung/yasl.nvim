@@ -1,5 +1,6 @@
 return {
 	global = true,
+	enable_icons = true,
 	components = {
 		"mode",
 		" ",
@@ -11,9 +12,9 @@ return {
 		"%=",
 		"diagnostics",
 		" ",
-		"%y",
+		"filetype",
 		" ",
-		"[%-8.(%l, %c%V%) %P]", -- filetype, location, and progress
+		"[%-8.(%l, %c%V%) %P]", -- location, and progress
 		" ",
 	}
 }

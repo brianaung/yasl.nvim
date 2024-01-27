@@ -21,12 +21,15 @@ These features are available without relying on any extra dependencies. It also 
 ![screenshot of statusline in replace mode](./examples/ss-replace.png)
 
 ## Installation
-Using Lazy:
+Using [Lazy](https://github.com/folke/lazy.nvim):
 ```lua
 {
     "brianaung/yasl.nvim",
+    dependencies = {
+        "nvim-tree/nvim-web-devicons", -- (optional) if you want icons
+    },
     config = function()
-        require("yasl").setup() -- call this to enable plugin
+        require("yasl").setup() -- this is required to load the plugin
     end
 }
 ```
@@ -37,6 +40,7 @@ Using Lazy:
 - [diagnostics](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/diagnostics.lua)
 - [branch](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/branch.lua)
 - [gitdiff](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/gitdiff.lua)
+- [filetype](https://github.com/brianaung/yasl.nvim/blob/main/lua/yasl/builtins/filetype.lua)
 - Your own custom component. See [recipe](#recipe-for-creating-your-own-component).
 - Any valid string used by vim's statusline items. See `:h statusline`.
 
@@ -46,14 +50,17 @@ require("yasl").setup({
     -- Use global statusline. See :h laststatus
     global = true,
 
+    -- true if nvim-web-devicons is installed, otherwise false
+    enable_icons = true, 
+
     --[[
     Accepts provided component name (or)
     any string vim can use for statusline value. See :h statusline
 
     Default layout:
-    +--------------------------------------------------------------------+
-    | mode | name branch diff |             | diagnostics | ft, loc prog |
-    +--------------------------------------------------------------------+
+    +----------------------------------------------------------------------------+
+    | mode | name branch diff |             | diagnostics | ft location progress |
+    +----------------------------------------------------------------------------+
     ]]--
     components = {
         "mode",
@@ -66,9 +73,9 @@ require("yasl").setup({
         "%=",
         "diagnostics",
         " ",
-        "%y",
+        "filetype",
         " ",
-        "[%-8.(%l, %c%V%) %P]", -- filetype, location, and progress
+        "[%-8.(%l, %c%V%) %P]", -- location, and progress
         " ",
     }
 })

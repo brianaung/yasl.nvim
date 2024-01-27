@@ -1,6 +1,9 @@
 local builtins = require("yasl.builtins")
 local default = require("yasl.default")
 
+_YaslConfig = _YaslConfig or {}
+_YaslConfig.global_settings = _YaslConfig.global_settings or {}
+
 local status_strings = {}
 
 local function set_statusline(str)
@@ -34,6 +37,12 @@ function M.setup(opts)
 	local global = vim.F.if_nil(opts.global, default.global)
 	vim.api.nvim_set_option("laststatus", global and 3 or 2)
 	vim.api.nvim_set_option("showmode", false)
+
+	-- opts.enable_icons
+	-- enable icons if has devicons AND option/default is set to true
+	_YaslConfig.global_settings.enable_icons =
+		vim.F.if_nil(opts.enable_icons, default.enable_icons) and
+		pcall(require, "nvim-web-devicons")
 
 	-- opts.components
 	local components = vim.F.if_nil(opts.components, default.components)
