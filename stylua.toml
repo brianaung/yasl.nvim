@@ -1,0 +1,3 @@
+indent_type = "Tabs"
+call_parentheses = "NoSingleTable"
+column_width = 120
