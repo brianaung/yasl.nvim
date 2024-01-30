@@ -11,12 +11,8 @@ end
 
 return {
 	name = "diagnostics",
-	events = { "WinEnter", "BufEnter", "LspAttach", "DiagnosticChanged" },
+	events = { "WinEnter", "BufEnter", "LspAttach", "LspDetach", "DiagnosticChanged" },
 	update = function()
-		local clients = vim.lsp.get_active_clients { buffer = 0 }
-
-		if #clients == 0 or (#clients == 1 and clients[1].name == "copilot") then return "" end
-
 		local error_count = get_diagnostic_count(vim.diagnostic.severity.ERROR)
 		local error = error_count > 0 and string.format("%%#YaslError#E%s%%* ", error_count) or ""
 
