@@ -81,7 +81,7 @@ return {
 			bg = get_hl("StatusLine").bg,
 		},
 		["Modified"] = {
-			fg = if_nil(get_hl("DiffLine").fg, "cyan"),
+			fg = if_nil(get_hl("DiffChanged").fg, "cyan"),
 			bg = get_hl("StatusLine").bg,
 		},
 	}
