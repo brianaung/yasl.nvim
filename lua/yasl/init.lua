@@ -33,10 +33,10 @@ local M = {}
 function M.setup(opts)
 	opts = vim.F.if_nil(opts, default)
 
-	-- opts.global
-	local global = vim.F.if_nil(opts.global, default.global)
-	vim.api.nvim_set_option("laststatus", global and 3 or 2)
-	vim.api.nvim_set_option("showmode", false)
+	vim.opt.showmode = false
+
+	-- opts.laststatus
+	vim.opt.laststatus = vim.F.if_nil(opts.laststatus, default.laststatus)
 
 	-- opts.enable_icons
 	-- enable icons if has devicons AND option/default is set to true
@@ -67,14 +67,6 @@ function M.setup(opts)
 			set_statusline(status_strings)
 		end
 	})
-
-	if not global then
-		vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
-			callback = function()
-				vim.api.nvim_win_set_option(0, "statusline", "")
-			end
-		})
-	end
 end
 
 return M

@@ -1,5 +1,5 @@
 return {
-	global = true,
+	laststatus = 3,
 	enable_icons = true,
 	components = {
 		"mode",

@@ -61,8 +61,8 @@ end)
 ### Default options
 ```lua
 require("yasl").setup({
-    -- Use global statusline. See :h laststatus
-    global = true,
+    -- See :h laststatus
+    laststatus = 3,
 
     -- true if nvim-web-devicons is installed, otherwise false
     enable_icons = true, 
