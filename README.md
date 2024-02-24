@@ -21,18 +21,32 @@ These features are available without relying on any extra dependencies. It also 
 ![screenshot of statusline in replace mode](./examples/ss-replace.png)
 
 ## Installation
-Using [Lazy](https://github.com/folke/lazy.nvim):
+<details>
+<summary>[Lazy](https://github.com/folke/lazy.nvim)</summary>
 ```lua
 {
     "brianaung/yasl.nvim",
     dependencies = {
         "nvim-tree/nvim-web-devicons", -- (optional) if you want icons
     },
-    config = function()
-        require("yasl").setup() -- this is required to load the plugin
-    end
+    opts = {}
 }
 ```
+</details>
+
+<details>
+<summary>[Packer](https://github.com/wbthomason/packer.nvim)</summary>
+```lua
+require("packer").startup(function()
+  use({
+    "brianaung/yasl.nvim",
+    config = function()
+      require("yasl").setup()
+    end,
+  })
+end)
+```
+</details>
 
 ## Configurations
 ### Available components
