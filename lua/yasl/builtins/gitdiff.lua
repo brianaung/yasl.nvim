@@ -20,8 +20,8 @@ local function process_diff(data)
 		if string.find(line, [[^@@ ]]) then
 			local tokens = vim.fn.matchlist(line, [[^@@ -\v(\d+),?(\d*) \+(\d+),?(\d*)]])
 			local line_stats = {
-				mod_count = tokens[3] == nil and 0 or tokens[3] == '' and 1 or tonumber(tokens[3]),
-				new_count = tokens[5] == nil and 0 or tokens[5] == '' and 1 or tonumber(tokens[5]),
+				mod_count = tokens[3] == nil and 0 or tokens[3] == "" and 1 or tonumber(tokens[3]),
+				new_count = tokens[5] == nil and 0 or tokens[5] == "" and 1 or tonumber(tokens[5]),
 			}
 			if line_stats.mod_count == 0 and line_stats.new_count > 0 then
 				added = added + line_stats.new_count
@@ -42,12 +42,25 @@ return {
 	name = "gitdiff",
 	events = { "WinEnter", "BufEnter", "BufWritePost" },
 	update = function()
-		if #vim.fn.expand("%") == 0 then return "" end -- no opened buffer
+		-- no opened buffer
+		if #vim.fn.expand("%") == 0 then
+			return ""
+		end
 
-		local raw_diff = vim.fn.system(string.format("git --no-pager diff --no-color --no-ext-diff -U0 -- %s",
-			vim.fn.expand("%")))
+		local raw_diff = vim.fn.system(
+			string.format(
+				[[git -C %s --no-pager diff --no-color --no-ext-diff -U0 -- %s]],
+				vim.fn.expand("%:h"),
+				vim.fn.expand("%:t")
+			)
+		)
+		-- Workaround for "uv_close: Assertion `!uv__is_closing(handle)` failed"
+		-- See: https://github.com/neovim/neovim/issues/21856
+		vim.cmd("sleep 10m")
 
-		if #raw_diff == 0 then return "" end -- no diff stats
+		if #raw_diff == 0 then
+			return ""
+		end -- no diff stats
 
 		local diff_stats = process_diff(split_lines(raw_diff))
 		local added = diff_stats.added > 0 and string.format("%%#YaslAdded#+%s%%* ", diff_stats.added) or ""
@@ -55,5 +68,5 @@ return {
 		local modified = diff_stats.modified > 0 and string.format("%%#YaslModified#~%s%%*", diff_stats.modified) or ""
 
 		return string.format("%s%s%s", added, removed, modified)
-	end
+	end,
 }
