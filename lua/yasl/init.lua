@@ -22,7 +22,7 @@ local function create_update_group(key, component)
 	end
 	if events then
 		vim.api.nvim_create_autocmd(events, {
-			callback = update_status
+			callback = update_status,
 		})
 	end
 	-- todo: accept user events as well
@@ -38,11 +38,16 @@ function M.setup(opts)
 	-- opts.laststatus
 	vim.opt.laststatus = vim.F.if_nil(opts.laststatus, default.laststatus)
 
+	-- opts.transparent
+	if vim.F.if_nil(opts.transparent, default.transparent) then
+		local normal_hl = vim.api.nvim_get_hl(0, { name = "Normal" })
+		vim.api.nvim_set_hl(0, "StatusLine", { fg = normal_hl.fg, bg = normal_hl.bg })
+	end
+
 	-- opts.enable_icons
 	-- enable icons if has devicons AND option/default is set to true
-	_YaslConfig.global_settings.enable_icons =
-		vim.F.if_nil(opts.enable_icons, default.enable_icons) and
-		pcall(require, "nvim-web-devicons")
+	_YaslConfig.global_settings.enable_icons = vim.F.if_nil(opts.enable_icons, default.enable_icons)
+		and pcall(require, "nvim-web-devicons")
 
 	-- opts.components
 	local components = vim.F.if_nil(opts.components, default.components)
@@ -65,7 +70,7 @@ function M.setup(opts)
 	vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
 		callback = function()
 			set_statusline(status_strings)
-		end
+		end,
 	})
 end
 

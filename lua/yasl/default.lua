@@ -1,6 +1,7 @@
 return {
 	laststatus = 3,
 	enable_icons = true,
+	transparent = false,
 	components = {
 		"mode",
 		" ",
