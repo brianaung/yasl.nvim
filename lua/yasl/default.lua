@@ -7,8 +7,8 @@ return {
 		"%<%t%h%m%r%w", -- filename
 		" ",
 		"branch",
-		" ",
-		"gitdiff",
+		-- " ",
+		-- "gitdiff",
 		"%=",
 		"diagnostics",
 		" ",

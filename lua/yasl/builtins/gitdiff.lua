@@ -56,7 +56,8 @@ return {
 		)
 		-- Workaround for "uv_close: Assertion `!uv__is_closing(handle)` failed"
 		-- See: https://github.com/neovim/neovim/issues/21856
-		vim.cmd("sleep 10m")
+		-- vim.cmd("sleep 10m")
+		-- TODO: this breaks oil.nvim; on oil buffer save, it does not set focus on confirmation float.
 
 		if #raw_diff == 0 then
 			return ""
