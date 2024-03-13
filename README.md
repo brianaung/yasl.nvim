@@ -22,7 +22,10 @@ These features are available without relying on any extra dependencies. It also 
 
 ## Installation
 <details>
-<summary>[Lazy](https://github.com/folke/lazy.nvim)</summary>
+<summary>
+    <a href="https://github.com/folke/lazy.nvim">lazy.nvim</a>
+</summary>
+
 ```lua
 {
     "brianaung/yasl.nvim",
@@ -32,10 +35,14 @@ These features are available without relying on any extra dependencies. It also 
     opts = {}
 }
 ```
+
 </details>
 
 <details>
-<summary>[Packer](https://github.com/wbthomason/packer.nvim)</summary>
+<summary>
+    <a href="https://github.com/wbthomason/packer.nvim">packer.nvim</a>
+</summary>
+
 ```lua
 require("packer").startup(function()
   use({
@@ -46,6 +53,7 @@ require("packer").startup(function()
   })
 end)
 ```
+
 </details>
 
 ## Configurations
