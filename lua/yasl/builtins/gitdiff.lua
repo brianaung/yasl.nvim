@@ -58,6 +58,7 @@ return {
 		-- See: https://github.com/neovim/neovim/issues/21856
 		-- vim.cmd("sleep 10m")
 		-- TODO: this breaks oil.nvim; on oil buffer save, it does not set focus on confirmation float.
+		-- UPDATE: no longer needed in v0.10.0
 
 		if #raw_diff == 0 then
 			return ""

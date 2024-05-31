@@ -66,6 +66,8 @@ end)
 - Your own custom component. See [recipe](#recipe-for-creating-your-own-component).
 - Any valid string used by vim's statusline items. See `:h statusline`.
 
+> `gitdiff` component has some issues on versions less than v0.10.0 so it's currently disabled by default. See: https://github.com/neovim/neovim/issues/21856
+
 ### Default options
 ```lua
 require("yasl").setup({
@@ -80,9 +82,9 @@ require("yasl").setup({
     any string vim can use for statusline value. See :h statusline
 
     Default layout:
-    +----------------------------------------------------------------------------+
-    | mode | name branch diff |             | diagnostics | ft location progress |
-    +----------------------------------------------------------------------------+
+    +-----------------------------------------------------------------------+
+    | mode | name branch |             | diagnostics | ft location progress |
+    +-----------------------------------------------------------------------+
     ]]--
     components = {
         "mode",
@@ -91,8 +93,6 @@ require("yasl").setup({
         " ",
         "branch",
         " ",
-        "gitdiff",
-        "%=",
         "diagnostics",
         " ",
         "filetype",

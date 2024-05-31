@@ -8,9 +8,10 @@ return {
 		"%<%t%h%m%r%w", -- filename
 		" ",
 		"branch",
-		-- " ",
+		" ",
+		-- TODO: re-enable when v0.10.0 becomes stable
 		-- "gitdiff",
-		"%=",
+		-- "%=",
 		"diagnostics",
 		" ",
 		"filetype",
