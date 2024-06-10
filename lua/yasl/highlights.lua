@@ -73,16 +73,16 @@ return {
 
 	["diff"] = {
 		["Added"] = {
-			fg = if_nil(get_hl("DiffAdded").fg, "red"),
+			fg = get_hl("DiffAdded").fg or get_hl("DiagnosticOk").fg or "green",
 			bg = get_hl("StatusLine").bg,
 		},
 		["Removed"] = {
-			fg = if_nil(get_hl("DiffRemoved").fg, "yellow"),
+			fg = get_hl("DiffRemoved").fg or get_hl("DiagnosticError").fg or "red",
 			bg = get_hl("StatusLine").bg,
 		},
 		["Modified"] = {
-			fg = if_nil(get_hl("DiffChanged").fg, "cyan"),
+			fg = get_hl("DiffChanged").fg or get_hl("DiagnosticWarn").fg or "yellow",
 			bg = get_hl("StatusLine").bg,
 		},
-	}
+	},
 }
