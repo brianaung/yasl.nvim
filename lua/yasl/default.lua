@@ -1,7 +1,7 @@
 return {
 	laststatus = 3,
 	enable_icons = true,
-	transparent = false,
+	transparent = true,
 	components = {
 		"mode",
 		" ",
@@ -9,9 +9,8 @@ return {
 		" ",
 		"branch",
 		" ",
-		-- TODO: re-enable when v0.10.0 becomes stable
-		-- "gitdiff",
-		-- "%=",
+		"gitdiff",
+		"%=",
 		"diagnostics",
 		" ",
 		"filetype",
