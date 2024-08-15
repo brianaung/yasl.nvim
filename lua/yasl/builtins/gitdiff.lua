@@ -34,24 +34,22 @@ end
 return {
 	events = { "WinEnter", "BufEnter", "BufWritePost" },
 	update = function()
-		-- no opened buffer
-		if #vim.fn.expand("%") == 0 then
-			return ""
-		end
-
-		local raw_diff = vim.fn.system(
-			string.format(
-				[[git -C %s --no-pager diff --no-color --no-ext-diff -U0 -- %s]],
-				vim.fn.expand("%:h"),
-				vim.fn.expand("%:t")
-			)
-		)
-
-		if #raw_diff == 0 then
-			return ""
-		end -- no diff stats
+		local obj = vim.system({
+			"git",
+			"-C",
+			vim.fn.expand("%:h"),
+			"--no-pager",
+			"diff",
+			"--no-color",
+			"--no-ext-diff",
+			"-U0",
+			"--",
+			vim.fn.expand("%:t"),
+		}, { text = true }):wait()
 
 		local diff_strlist = {}
+
+		local raw_diff = obj.stdout or ""
 		local diff_stats = process_diff(split_lines(raw_diff))
 
 		if diff_stats.added > 0 then
@@ -64,7 +62,6 @@ return {
 			table.insert(diff_strlist, "~" .. diff_stats.modified)
 		end
 
-		-- return string.format("%s%s%s", added, removed, modified)
 		return table.concat(diff_strlist)
 	end,
 }
