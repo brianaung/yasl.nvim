@@ -5,9 +5,10 @@ M._status_strings = {}
 M.opts = {
 	separator = " ",
 	components = {
+		require("yasl.builtins.mode"),
 		"%<%t%h%m%r%w", -- filename
 		require("yasl.builtins.gitbranch"),
-		require("yasl.builtins.diagnostics"),
+		require("yasl.builtins.diagnostic"),
 		require("yasl.builtins.gitdiff"),
 		"%=",
 		"[%-8.(%l, %c%V%) %P]", -- location, and progress
@@ -29,14 +30,12 @@ M.setup = function(opts)
 				return
 			end
 
-			local hlGroup = component.hlGroup or ""
 			local events = component.events or {}
-
 			if next(events) then
 				vim.api.nvim_create_autocmd(events, {
 					group = group,
 					callback = function()
-						local new = "%#" .. hlGroup .. "#" .. component.update() .. "%*"
+						local new = component.update() or ""
 						if M._status_strings[idx] ~= new then
 							M._status_strings[idx] = new
 							vim.opt.statusline = table.concat(M._status_strings, M.opts.separator)
@@ -45,7 +44,7 @@ M.setup = function(opts)
 				})
 			end
 
-			table.insert(M._status_strings, "%#" .. hlGroup .. "#" .. component.update() .. "%*")
+			table.insert(M._status_strings, component.update() or "")
 		elseif type(component) == "string" then
 			table.insert(M._status_strings, component)
 		end
