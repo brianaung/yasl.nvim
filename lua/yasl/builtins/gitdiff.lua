@@ -1,10 +1,3 @@
--- set diff hl
-(function()
-	for key, val in pairs(require("yasl.highlights").diff) do
-		vim.api.nvim_set_hl(0, "Yasl" .. key, val)
-	end
-end)()
-
 local function split_lines(str)
 	local lines = {}
 	for s in str:gmatch("[^\r\n]+") do
@@ -39,7 +32,6 @@ local function process_diff(data)
 end
 
 return {
-	name = "gitdiff",
 	events = { "WinEnter", "BufEnter", "BufWritePost" },
 	update = function()
 		-- no opened buffer
@@ -54,21 +46,25 @@ return {
 				vim.fn.expand("%:t")
 			)
 		)
-		-- Workaround for "uv_close: Assertion `!uv__is_closing(handle)` failed"
-		-- See: https://github.com/neovim/neovim/issues/21856
-		-- vim.cmd("sleep 10m")
-		-- TODO: this breaks oil.nvim; on oil buffer save, it does not set focus on confirmation float.
-		-- UPDATE: no longer needed in v0.10.0
 
 		if #raw_diff == 0 then
 			return ""
 		end -- no diff stats
 
+		local diff_strlist = {}
 		local diff_stats = process_diff(split_lines(raw_diff))
-		local added = diff_stats.added > 0 and string.format("%%#YaslAdded#+%s%%* ", diff_stats.added) or ""
-		local removed = diff_stats.removed > 0 and string.format("%%#YaslRemoved#-%s%%* ", diff_stats.removed) or ""
-		local modified = diff_stats.modified > 0 and string.format("%%#YaslModified#~%s%%*", diff_stats.modified) or ""
 
-		return string.format("%s%s%s", added, removed, modified)
+		if diff_stats.added > 0 then
+			table.insert(diff_strlist, "+" .. diff_stats.added)
+		end
+		if diff_stats.removed > 0 then
+			table.insert(diff_strlist, "-" .. diff_stats.removed)
+		end
+		if diff_stats.modified > 0 then
+			table.insert(diff_strlist, "~" .. diff_stats.modified)
+		end
+
+		-- return string.format("%s%s%s", added, removed, modified)
+		return table.concat(diff_strlist)
 	end,
 }

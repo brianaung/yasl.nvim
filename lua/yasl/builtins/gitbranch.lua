@@ -1,12 +1,10 @@
 return {
-	name = "branch",
 	events = { "WinEnter", "BufEnter" },
 	update = function()
-		local branch = vim.fn.system("git branch --show-current 2> /dev/null | tr -d '\n'")
+		local obj = vim.system({ "git", "rev-parse", "--abbrev-ref", "HEAD" }, { text = true }):wait()
+		local branch = vim.fn.substitute(obj.stdout or "", "\n", "", "g")
 		if branch ~= "" then
-			return string.format("[%s]", branch)
-		else
-			return ""
+			return "[" .. branch .. "]"
 		end
 	end,
 }
