@@ -62,6 +62,6 @@ return {
 			table.insert(diff_strlist, "~" .. diff_stats.modified)
 		end
 
-		return table.concat(diff_strlist)
+		return string.format(" %s ", table.concat(diff_strlist, ","))
 	end,
 }

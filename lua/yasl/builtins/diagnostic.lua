@@ -25,6 +25,6 @@ return {
 			table.insert(diagnostic_strlist, "H" .. hint)
 		end
 
-		return table.concat(diagnostic_strlist)
+		return string.format(" %s ", table.concat(diagnostic_strlist, ","))
 	end,
 }

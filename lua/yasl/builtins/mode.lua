@@ -45,10 +45,18 @@ local modes = setmetatable({
 	end,
 })
 
+vim.api.nvim_set_hl(0, "YaslModeNormal", { link = "Cursor", default = true })
+vim.api.nvim_set_hl(0, "YaslModeInsert", { link = "DiffAdd", default = true })
+vim.api.nvim_set_hl(0, "YaslModeVisual", { link = "DiffChange", default = true })
+vim.api.nvim_set_hl(0, "YaslModeReplace", { link = "DiffDelete", default = true })
+vim.api.nvim_set_hl(0, "YaslModeCommand", { link = "DiffText", default = true })
+vim.api.nvim_set_hl(0, "YaslModeTerm", { link = "CurSearch", default = true })
+vim.api.nvim_set_hl(0, "YaslModeOther", { link = "IncSearch", default = true })
+
 return {
 	events = { "ModeChanged" },
 	update = function()
 		local mode_info = modes[vim.fn.mode()]
-		return "%#" .. mode_info.hl .. "#" .. mode_info.display .. "%*"
+		return string.format("%%#%s# %s %%*", mode_info.hl, mode_info.display)
 	end,
 }

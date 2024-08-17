@@ -4,7 +4,7 @@ return {
 		local obj = vim.system({ "git", "rev-parse", "--abbrev-ref", "HEAD" }, { text = true }):wait()
 		local branch = vim.fn.substitute(obj.stdout or "", "\n", "", "g")
 		if branch ~= "" then
-			return "[" .. branch .. "]"
+			return string.format(" [%s] ", branch)
 		end
 	end,
 }
