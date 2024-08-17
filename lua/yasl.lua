@@ -4,15 +4,14 @@ local M = {}
 M._status_strlist = {}
 
 M.opts = {
-	separator = " ",
 	components = {
 		require("yasl.builtins.mode"),
-		"%<%t%h%m%r%w", -- filename
+		"%#StatusLineNC# %<%t%h%m%r%w %*", -- filename
 		require("yasl.builtins.gitbranch"),
 		require("yasl.builtins.diagnostic"),
 		require("yasl.builtins.gitdiff"),
 		"%=",
-		"[%-8.(%l, %c%V%) %P]", -- location, and progress
+		"%#StatusLineNC# [%-8.(%l, %c%V%) %P] %*", -- location, and progress
 	},
 }
 
@@ -41,7 +40,7 @@ M.setup = function(opts)
 						local new = component.update() or ""
 						if M._status_strlist[idx] ~= new then
 							M._status_strlist[idx] = new
-							M._set_statusline(M._status_strlist, M.opts.separator)
+							M._set_statusline(M._status_strlist)
 						end
 					end,
 				})
@@ -53,19 +52,17 @@ M.setup = function(opts)
 		end
 	end
 
-	M._set_statusline(M._status_strlist, M.opts.separator)
+	M._set_statusline(M._status_strlist)
 end
 
----@param status_strlist string[] An array of statusline string values evaluated
----@param separator string Character(s) to render between sections
-M._set_statusline = function(status_strlist, separator)
+M._set_statusline = function(status_strlist)
 	local filtered = {}
 	for _, str in ipairs(status_strlist) do
 		if type(str) == "string" and str ~= "" then
 			table.insert(filtered, str)
 		end
 	end
-	vim.opt.statusline = table.concat(filtered, separator)
+	vim.opt.statusline = table.concat(filtered):gsub("%s+", " ")
 end
 
 return M
