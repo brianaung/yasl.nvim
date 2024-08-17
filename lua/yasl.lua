@@ -47,7 +47,7 @@ M.setup = function(opts)
 				})
 			end
 
-			table.insert(M._status_strlist, component.update() or "")
+			table.insert(M._status_strlist, component.update())
 		elseif type(component) == "string" then
 			table.insert(M._status_strlist, component)
 		end
