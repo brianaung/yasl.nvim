@@ -1,4 +1,3 @@
--- test
 local M = {}
 
 M._status_strlist = {}
@@ -7,9 +6,6 @@ M.opts = {
 	components = {
 		require("yasl.builtins.mode"),
 		"%#StatusLineNC# %<%t%h%m%r%w %*", -- filename
-		require("yasl.builtins.gitbranch"),
-		require("yasl.builtins.diagnostic"),
-		require("yasl.builtins.gitdiff"),
 		"%=",
 		"%#StatusLineNC# [%-8.(%l, %c%V%) %P] %*", -- location, and progress
 	},
