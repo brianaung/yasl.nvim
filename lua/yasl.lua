@@ -5,9 +5,11 @@ M._status_strlist = {}
 M.opts = {
 	components = {
 		require("yasl.builtins.mode"),
-		"%#StatusLineNC# %<%t%h%m%r%w %*", -- filename
+		" ",
+		"%<%t%h%m%r%w", -- filename
 		"%=",
-		"%#StatusLineNC# [%-8.(%l, %c%V%) %P] %*", -- location, and progress
+		"[%-8.(%l, %c%V%) %P]", -- location, and progress
+		" ",
 	},
 }
 
