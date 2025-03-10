@@ -3,6 +3,9 @@ local opts = vim.tbl_deep_extend("force", {
 		require("yasl.builtins.mode"),
 		" ",
 		"%<%t%h%m%r%w", -- filename
+		require("yasl.builtins.gitbranch"),
+		require("yasl.builtins.gitdiff"),
+		require("yasl.builtins.diagnostic"),
 		"%=",
 		"[%-8.(%l, %c%V%) %P]", -- location, and progress
 		" ",
